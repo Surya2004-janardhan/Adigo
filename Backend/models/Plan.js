@@ -10,4 +10,6 @@ const planSchema = new mongoose.Schema({
     createdAt: Date,
     updatedAt: Date
 });
+
+// testing with new branchgit may be this or that happens
 module.exports = mongoose.model('Plan', planSchema);
