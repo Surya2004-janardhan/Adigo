@@ -3,7 +3,7 @@ const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 const cors = require('cors')
-
+const authRoutes = require('./routes/authRoute.js');
 // imported connection async func
 const connecttoDB = require('./db/dbconnection.js');
 const middleware = require('./middleware/authMiddleware.js');
@@ -17,6 +17,9 @@ app.use(cors())
 app.use(express.json())
 
 app.use(middleware)
+
+
+app.use('/auth' , authRoutes)
 
 app.use(bodyParser.urlencoded({ extended: true }));
 
