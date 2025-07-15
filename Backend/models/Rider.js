@@ -12,6 +12,23 @@ const riderschema = new mongoose.Schema({
     required: true,
     unique: true,
   },
+  vehical_Details: {
+    type: mongoose.Schema.Types.Mixed,
+    default: [],
+  },
+  verified: {
+    type: String,
+  },
+  is_available : {
+    type: Boolean,
+    default: true,
+  },
+  license_no : {
+    type : String
+  },
+  current_location : {
+    type : String
+  },
   phonenumber: {
     type: String,
     required: true,

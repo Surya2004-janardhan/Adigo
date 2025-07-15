@@ -1,20 +1,21 @@
 const mongoose = require("mongoose");
+// user_id, driver_id, pickup_location, drop_location, distance, fare, status, created_at
 
 const rideSchema = new mongoose.Schema({
-  rider: {
+  rider_id: {
     type: String,
     required: true,
   },
-  user: {
+  user_id: {
     type: String,
     required: true,
   },
 
-  startLocation: {
+  pickup_location: {
     type: String,
     required: true,
   },
-  endLocation: {
+  drop_location: {
     type: String,
     required: true,
   },
