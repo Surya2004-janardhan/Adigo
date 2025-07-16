@@ -1,8 +1,9 @@
 const express = require("express");
 
 const router = express.Router();
+const User = require("../models/User");
 
-router.post("/signup", async (req, res) => {
+router.post("/register", async (req, res) => {
   try {
     const { name, rollno, email, phonenumber, password } = req.body;
     if (name && rollno && email && phonenumber && password) {
@@ -13,10 +14,18 @@ router.post("/signup", async (req, res) => {
         phonenumber,
         password,
       });
-      const token = await jwt.sign({ user: user.rollno}, process.env.JWT_SECRET, { expiresIn: "30d" });
-            res.status(201).json({ message: "User created successfully", user: user, token });
+      const token = await jwt.sign(
+        { user: user.rollno },
+        process.env.JWT_SECRET,
+        { expiresIn: "30d" }
+      );
+      res
+        .status(201)
+        .json({ message: "User created successfully", user: user, token });
       await localStorage.setItem("token", token);
-      res.status(201).json({ message: "User created successfully", user: user });
+      res
+        .status(201)
+        .json({ message: "User created successfully", user: user });
     } else {
       res.status(400).json({ message: "Please provide all details" });
     }
@@ -46,6 +55,5 @@ router.post("/login", async (req, res) => {
   }
   // res.send(' route');
 });
-
 
 module.exports = router;
