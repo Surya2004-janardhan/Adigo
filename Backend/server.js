@@ -11,6 +11,7 @@ const connecttoDB = require("./db/dbconnection.js");
 const middleware = require("./middleware/authMiddleware.js");
 const bookRoute = require("./routes/bookRideRoute.js");
 // invoked connect to db async func to get proper connection for mongoDB
+// wt a day to be so bad
 connecttoDB();
 
 const app = express();
