@@ -5,11 +5,11 @@ const dotenv = require("dotenv");
 const cors = require("cors");
 const authRoutes = require("./routes/authRoute.js");
 const profileRoutes = require("./routes/profileRoute.js");
-const rides = require('./routes/ridesRoute.js')
+const rides = require("./routes/ridesRoute.js");
 // imported connection async func
 const connecttoDB = require("./db/dbconnection.js");
 const middleware = require("./middleware/authMiddleware.js");
-const bookRoute = require('./routes/bookRideRoute.js')
+const bookRoute = require("./routes/bookRideRoute.js");
 // invoked connect to db async func to get proper connection for mongoDB
 connecttoDB();
 
@@ -25,7 +25,8 @@ app.use("/auth", authRoutes);
 
 app.use("/user", profileRoutes);
 app.use("/user", rides);
-app.use('/user' , bookRoute)
+app.use("/user", bookRoute);
+// wt am i dng here, y did i exist
 
 app.use(bodyParser.urlencoded({ extended: true }));
 
