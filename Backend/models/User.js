@@ -25,6 +25,9 @@ const userschema = new mongoose.Schema({
     type: mongoose.Schema.Types.Mixed,
     default: [],
   },
+  expoPushToken: {
+    type: String,
+  },
   // role: String,
   createdAt: Date,
   updatedAt: Date,

@@ -10,6 +10,8 @@ const rides = require("./routes/ridesRoute.js");
 const connecttoDB = require("./db/dbconnection.js");
 const middleware = require("./middleware/authMiddleware.js");
 const bookRoute = require("./routes/bookRideRoute.js");
+const notificationRoutes = require("./routes/notificationRoute.js");
+const paymentRoutes = require("./routes/paymentRoute.js");
 // invoked connect to db async func to get proper connection for mongoDB
 // wt a day to be so bad
 connecttoDB();
@@ -27,6 +29,8 @@ app.use("/auth", authRoutes);
 app.use("/user", profileRoutes);
 app.use("/user", rides);
 app.use("/user", bookRoute);
+app.use("/notification", notificationRoutes);
+app.use("/payment", paymentRoutes);
 // wt am i dng here, y did i exist
 
 app.use(bodyParser.urlencoded({ extended: true }));

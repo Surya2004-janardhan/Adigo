@@ -33,6 +33,7 @@ const rideSchema = new mongoose.Schema({
   },
   createdAt: Date,
   updatedAt: Date,
+  paid: { type: Boolean, default: false }, // for payment status
 });
 
 module.exports = mongoose.model("Ride", rideSchema);

@@ -57,4 +57,11 @@ router.patch("/cancle/:ride_id", middleware, async (req, res) => {
       .json({ message: "Internal server error", error: error.message });
   }
 });
+
+router.get("/rides/:id", middleware, async (req, res) => {
+  const ride = await Ride.findById(req.params.id);
+  if (!ride) return res.status(404).json({ message: "Ride not found" });
+  res.json({ ride });
+});
+
 module.exports = router;
