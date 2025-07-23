@@ -1,7 +1,7 @@
 import * as Notifications from "expo-notifications";
 import * as Device from "expo-device";
 import { Platform } from "react-native";
-
+// hoping this shit works
 // Configure notification handler (foreground behavior)
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
