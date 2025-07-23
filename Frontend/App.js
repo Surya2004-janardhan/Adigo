@@ -14,6 +14,7 @@ import RideHistoryScreen from "./screens/RideHistoryScreen";
 import SplashScreen from "./SplashScreen";
 import MapScreen from "./screens/MapScreen";
 import PaymentScreen from "./screens/PaymentScreen";
+import MonthlyAutoShareScreen from "./screens/MonthlyAutoShareScreen";
 
 const Stack = createStackNavigator();
 
@@ -32,6 +33,10 @@ function RootNavigator() {
             <Stack.Screen name="RideHistory" component={RideHistoryScreen} />
             <Stack.Screen name="MapScreen" component={MapScreen} />
             <Stack.Screen name="PaymentScreen" component={PaymentScreen} />
+            <Stack.Screen
+              name="MonthlyAutoShare"
+              component={MonthlyAutoShareScreen}
+            />
           </>
         ) : (
           <Stack.Screen name="LoginSingup" component={LoginSingup} />

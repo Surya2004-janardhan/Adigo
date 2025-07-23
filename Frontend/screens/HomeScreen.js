@@ -143,6 +143,20 @@ export default function HomeScreen({ navigation }) {
             </StyledText>
           </StyledButton>
         )}
+        <StyledButton
+          className="bg-purple-600 rounded px-6 py-3 mb-4 flex-row items-center justify-center"
+          onPress={() => navigation.navigate("MonthlyAutoShare")}
+        >
+          <Icon
+            name="calendar"
+            size={20}
+            color="#fff"
+            style={{ marginRight: 8 }}
+          />
+          <StyledText className="text-white text-lg text-center font-semibold">
+            Monthly Auto Share
+          </StyledText>
+        </StyledButton>
         {/* Book Ride Card */}
         <StyledView className="mb-8 p-6 rounded-2xl bg-blue-100 shadow">
           <StyledText className="text-lg font-semibold text-blue-800 mb-4">
