@@ -12,10 +12,12 @@ import { useApi } from "../ApiContext";
 import { useAuth } from "../AuthContext";
 import axios from "axios";
 
+
 const StyledView = styled(View);
 const StyledText = styled(Text);
 const StyledInput = styled(TextInput);
 const StyledButton = styled(TouchableOpacity);
+
 
 export default function LoginSingup({ navigation }) {
   const { baseUrl } = useApi();

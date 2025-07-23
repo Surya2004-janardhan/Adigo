@@ -1,5 +1,5 @@
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet } from "react-native";
+import { StyleSheet, View } from "react-native";
 import { ApiProvider } from "./ApiContext";
 import { AuthProvider, useAuth } from "./AuthContext";
 import React from "react";
@@ -12,9 +12,15 @@ import RideDetailsScreen from "./screens/RideDetailsScreen";
 import ActiveRideScreen from "./screens/ActiveRideScreen";
 import RideHistoryScreen from "./screens/RideHistoryScreen";
 import SplashScreen from "./SplashScreen";
-import MapScreen from "./screens/MapScreen";
+// import MapScreen from "./screens/MapScreen";
 import PaymentScreen from "./screens/PaymentScreen";
 import MonthlyAutoShareScreen from "./screens/MonthlyAutoShareScreen";
+import "./global.css";
+import { NativeWindStyleSheet } from "nativewind";
+
+NativeWindStyleSheet.setOutput({
+  default: "native",
+});
 
 const Stack = createStackNavigator();
 
@@ -31,7 +37,7 @@ function RootNavigator() {
             <Stack.Screen name="RideDetails" component={RideDetailsScreen} />
             <Stack.Screen name="ActiveRide" component={ActiveRideScreen} />
             <Stack.Screen name="RideHistory" component={RideHistoryScreen} />
-            <Stack.Screen name="MapScreen" component={MapScreen} />
+            {/* <Stack.Screen name="MapScreen" component={MapScreen} /> */}
             <Stack.Screen name="PaymentScreen" component={PaymentScreen} />
             <Stack.Screen
               name="MonthlyAutoShare"
