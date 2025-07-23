@@ -38,5 +38,5 @@ app.use("/monthly-auto", monthlyAutoShareRoute);
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.listen(3000, () => {
-  console.log("server ra bujji port 3000 ra bujji");
+  console.log("server ra Bujji, port 3000 antah ra Bujji");
 });
