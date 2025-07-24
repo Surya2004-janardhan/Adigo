@@ -26,10 +26,16 @@ const Stack = createStackNavigator();
 
 function RootNavigator() {
   const { user, loading } = useAuth();
+  // const { user } = useAuth();
+  console.log("🌟 user in RootNavigator:", user);
+
   if (loading) return <SplashScreen />;
   return (
     <NavigationContainer>
-      <Stack.Navigator screenOptions={{ headerShown: false }}>
+      <Stack.Navigator
+        // key={user ? "auth" : "guest"} // 🔑 force remount when auth state changes
+        screenOptions={{ headerShown: false }}
+      >
         {user ? (
           <>
             <Stack.Screen name="Home" component={HomeScreen} />

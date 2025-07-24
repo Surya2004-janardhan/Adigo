@@ -30,23 +30,42 @@ export const AuthProvider = ({ children }) => {
     load();
   }, [baseUrl]);
 
-  const login = async (rollno, password) => {
-    const res = await axios.post(`${baseUrl}/auth/login`, { rollno, password });
-    if (res.data.token) {
-      setToken(res.data.token);
-      await AsyncStorage.setItem("token", res.data.token);
-      setUser(res.data.user);
+  const login = async (form) => {
+    const res = await axios.post(`${baseUrl}/auth/login`, form);
+    const login = async (form) => {
+      const res = await axios.post(`${baseUrl}/auth/login`, form);
+
+      const { token, user } = res.data;
+
+      if (token && user) {
+        setToken(token); // ✅ store in context
+        await AsyncStorage.setItem("token", token); // ✅ persist
+        setUser(user); // ✅ triggers navigation
+      }
+
+      return res;
+    };
+
+    const { token, user } = res.data;
+
+    if (token && user) {
+      setToken(token); // ✅ store in context
+      await AsyncStorage.setItem("token", token); // ✅ persist
+      setUser(user); // ✅ triggers navigation
     }
+
     return res;
   };
 
+
   const signup = async (form) => {
     const res = await axios.post(`${baseUrl}/auth/register`, form);
-    // console.log(res)
+    // console.log(res.data.token)
     if (res.data.token) {
       setToken(res.data.token);
       await AsyncStorage.setItem("token", res.data.token);
       setUser(res.data.user);
+      // if res.data
     }
     return res;
   };

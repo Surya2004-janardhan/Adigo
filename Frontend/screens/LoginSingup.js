@@ -11,8 +11,10 @@ import {
 import { useApi } from "../ApiContext";
 import { useAuth } from "../AuthContext";
 import axios from "axios";
-
+// import { HomeScreen } from "./HomeScreen";
+// import { useNavigation } from "@react-navigation/native";
 export default function LoginSingup({ navigation }) {
+  // const navigation = useNavigation()
   const { baseUrl } = useApi();
   const { login, signup } = useAuth();
   const [isLogin, setIsLogin] = useState(true);
@@ -29,30 +31,53 @@ export default function LoginSingup({ navigation }) {
     setForm({ ...form, [key]: value });
   };
 
+  // const handleSubmit = async () => {
+  //   setLoading(true);
+  //   try {
+  //     let res;
+  //     if (isLogin) {
+  //       res = await login(form.rollno, form.password);
+  //     } else {
+  //       res = await signup(form);
+  //     }
+  //     Alert.alert(
+  //       "Success",
+  //       res.data.message || (isLogin ? "Login successful" : "Signup successful")
+  //     );
+  //     // navigation.navigate("Home");
+  //     navigation.reset({
+  //       index: 0,
+  //       routes: [{ name: "Home" }],
+  //     });
+  //   } catch (e) {
+  //     Alert.alert("Error", e.message);
+  //     if (e.response && e.response.data && e.response.data.message) {
+  //       Alert.alert("Error", e.response.data.message);
+  //     } else {
+  //       Alert.alert("Error", "Network");
+  //     }
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
   const handleSubmit = async () => {
-    setLoading(true);
     try {
-      let res;
       if (isLogin) {
-        res = await login(form.rollno, form.password);
+        const res = await login(form); // <- this should update context
+        console.log("Logged in successfully", res.data);
+        // No need to navigate manually — RootNavigator will change screen
       } else {
-        res = await signup(form);
+        const res = await signup(form);
+        if (!res.data.token) {
+          Alert.alert("Signup successful", "Please log in to continue");
+          setIsLogin(true);
+        }
       }
+    } catch (err) {
       Alert.alert(
-        "Success",
-        res.data.message || (isLogin ? "Login successful" : "Signup successful")
+        "Error",
+        err?.response?.data?.message || "Something went wrong"
       );
-navigation.dispatch(
-  StackActions.replace("Home")
-);
-    } catch (e) {
-      if (e.response && e.response.data && e.response.data.message) {
-        Alert.alert("Error", e.response.data.message);
-      } else {
-        Alert.alert("Error", "Network error");
-      }
-    } finally {
-      setLoading(false);
     }
   };
 
