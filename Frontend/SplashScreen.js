@@ -1,17 +1,26 @@
 import React from "react";
-import { View, Text, ActivityIndicator } from "react-native";
-import { styled } from "nativewind";
-
-const StyledView = styled(View);
-const StyledText = styled(Text);
+import { View, Text, ActivityIndicator, StyleSheet } from "react-native";
 
 export default function SplashScreen() {
   return (
-    <StyledView className="flex-1 items-center justify-center bg-blue-600">
-      <StyledText className="text-4xl font-bold text-white mb-6">
-        Adigo
-      </StyledText>
+    <View style={styles.container}>
+      <Text style={styles.title}>Adigo</Text>
       <ActivityIndicator size="large" color="#fff" />
-    </StyledView>
+    </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "#2563eb", // Tailwind 'bg-blue-600'
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  title: {
+    fontSize: 32, // Tailwind 'text-4xl'
+    fontWeight: "bold",
+    color: "#fff",
+    marginBottom: 24, // Tailwind 'mb-6'
+  },
+});

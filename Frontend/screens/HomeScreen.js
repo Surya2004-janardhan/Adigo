@@ -7,17 +7,12 @@ import {
   FlatList,
   Alert,
   ScrollView,
+  StyleSheet,
 } from "react-native";
-import { styled } from "nativewind";
 import { useApi } from "../ApiContext";
 import { useAuth } from "../AuthContext";
 import axios from "axios";
 import Icon from "react-native-vector-icons/FontAwesome";
-
-const StyledView = styled(View);
-const StyledText = styled(Text);
-const StyledInput = styled(TextInput);
-const StyledButton = styled(TouchableOpacity);
 
 export default function HomeScreen({ navigation }) {
   const { baseUrl } = useApi();
@@ -28,7 +23,6 @@ export default function HomeScreen({ navigation }) {
   const [loading, setLoading] = useState(false);
   const [user, setUser] = useState(null);
 
-  // Fetch user info
   useEffect(() => {
     if (!token) return;
     const fetchUser = async () => {
@@ -44,7 +38,6 @@ export default function HomeScreen({ navigation }) {
     fetchUser();
   }, [baseUrl, token]);
 
-  // Fetch rides on mount
   useEffect(() => {
     if (!token) return;
     fetchRides();
@@ -91,105 +84,86 @@ export default function HomeScreen({ navigation }) {
     }
   };
 
-  // Find active ride (status not completed/cancled)
   const activeRide = rides.find(
     (r) => r.status === "pending" || r.status === "accepted"
   );
 
   return (
     <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
-      <StyledView className="flex-1 bg-blue-50 px-4 py-8">
+      <View style={styles.container}>
         {/* User Info */}
-        <StyledView className="mb-6 p-4 rounded-xl bg-white shadow flex-row items-center justify-between">
-          <StyledText className="text-xl font-bold text-blue-700">
-            Hi, {user ? user.name : "..."}
-          </StyledText>
-          <StyledText className="text-base text-gray-500">
+        <View style={styles.userCard}>
+          <Text style={styles.userName}>Hi, {user ? user.name : "..."}</Text>
+          <Text style={styles.userRoll}>
             Roll: {user ? user.rollno : "..."}
-          </StyledText>
-        </StyledView>
-        <StyledButton
-          className="bg-blue-600 rounded px-6 py-3 mb-4 flex-row items-center justify-center"
+          </Text>
+        </View>
+
+        <TouchableOpacity
+          style={styles.button}
           onPress={() => navigation.navigate("Profile")}
         >
-          <Icon name="user" size={20} color="#fff" style={{ marginRight: 8 }} />
-          <StyledText className="text-white text-lg text-center font-semibold">
-            View Profile
-          </StyledText>
-        </StyledButton>
-        <StyledButton
-          className="bg-blue-500 rounded px-6 py-3 mb-4 flex-row items-center justify-center"
+          <Icon name="user" size={20} color="#fff" style={styles.icon} />
+          <Text style={styles.buttonText}>View Profile</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          style={[styles.button, { backgroundColor: "#3b82f6" }]}
           onPress={() => navigation.navigate("RideHistory")}
         >
-          <Icon
-            name="history"
-            size={20}
-            color="#fff"
-            style={{ marginRight: 8 }}
-          />
-          <StyledText className="text-white text-lg text-center font-semibold">
-            Ride History
-          </StyledText>
-        </StyledButton>
+          <Icon name="history" size={20} color="#fff" style={styles.icon} />
+          <Text style={styles.buttonText}>Ride History</Text>
+        </TouchableOpacity>
+
         {activeRide && (
-          <StyledButton
-            className="bg-green-600 rounded px-6 py-3 mb-4"
+          <TouchableOpacity
+            style={[styles.button, { backgroundColor: "#16a34a" }]}
             onPress={() =>
               navigation.navigate("ActiveRide", { rideId: activeRide._id })
             }
           >
-            <StyledText className="text-white text-lg text-center font-semibold">
-              Go to Active Ride
-            </StyledText>
-          </StyledButton>
+            <Text style={styles.buttonText}>Go to Active Ride</Text>
+          </TouchableOpacity>
         )}
-        <StyledButton
-          className="bg-purple-600 rounded px-6 py-3 mb-4 flex-row items-center justify-center"
+
+        <TouchableOpacity
+          style={[styles.button, { backgroundColor: "#7c3aed" }]}
           onPress={() => navigation.navigate("MonthlyAutoShare")}
         >
-          <Icon
-            name="calendar"
-            size={20}
-            color="#fff"
-            style={{ marginRight: 8 }}
-          />
-          <StyledText className="text-white text-lg text-center font-semibold">
-            Monthly Auto Share
-          </StyledText>
-        </StyledButton>
+          <Icon name="calendar" size={20} color="#fff" style={styles.icon} />
+          <Text style={styles.buttonText}>Monthly Auto Share</Text>
+        </TouchableOpacity>
+
         {/* Book Ride Card */}
-        <StyledView className="mb-8 p-6 rounded-2xl bg-blue-100 shadow">
-          <StyledText className="text-lg font-semibold text-blue-800 mb-4">
-            Book a Ride
-          </StyledText>
-          <StyledInput
-            className="border border-blue-300 rounded px-4 py-2 mb-3 bg-white"
+        <View style={styles.rideCard}>
+          <Text style={styles.rideCardTitle}>Book a Ride</Text>
+          <TextInput
+            style={styles.input}
             placeholder="Pickup Location (lat,long)"
             value={pickup}
             onChangeText={setPickup}
           />
-          <StyledInput
-            className="border border-blue-300 rounded px-4 py-2 mb-4 bg-white"
+          <TextInput
+            style={[styles.input, { marginBottom: 16 }]}
             placeholder="Drop Location (lat,long)"
             value={drop}
             onChangeText={setDrop}
           />
-          <StyledButton
-            className="bg-blue-600 rounded px-6 py-3"
+          <TouchableOpacity
+            style={styles.bookButton}
             onPress={handleBookRide}
             disabled={loading}
           >
-            <StyledText className="text-white text-lg text-center font-semibold">
+            <Text style={styles.buttonText}>
               {loading ? "Booking..." : "Book Ride"}
-            </StyledText>
-          </StyledButton>
-        </StyledView>
+            </Text>
+          </TouchableOpacity>
+        </View>
+
         {/* Recent Rides */}
-        <StyledText className="text-lg font-semibold text-blue-800 mb-2">
-          Recent Rides
-        </StyledText>
+        <Text style={styles.sectionTitle}>Recent Rides</Text>
         {rides.length === 0 ? (
-          <StyledText className="text-gray-500 mb-8">No rides yet.</StyledText>
+          <Text style={styles.emptyText}>No rides yet.</Text>
         ) : (
           <FlatList
             data={rides}
@@ -200,24 +174,129 @@ export default function HomeScreen({ navigation }) {
                   navigation.navigate("RideDetails", { rideId: item._id })
                 }
               >
-                <StyledView className="mb-3 p-4 rounded-xl bg-white shadow flex-row justify-between items-center">
-                  <StyledView>
-                    <StyledText className="text-base font-bold text-blue-700">
+                <View style={styles.rideItem}>
+                  <View>
+                    <Text style={styles.rideLocation}>
                       {item.pickup_location} → {item.drop_location}
-                    </StyledText>
-                    <StyledText className="text-xs text-gray-500">
-                      Status: {item.status}
-                    </StyledText>
-                  </StyledView>
-                  <StyledText className="text-base font-semibold text-blue-600">
-                    ₹{item.fare || "--"}
-                  </StyledText>
-                </StyledView>
+                    </Text>
+                    <Text style={styles.rideStatus}>Status: {item.status}</Text>
+                  </View>
+                  <Text style={styles.rideFare}>₹{item.fare || "--"}</Text>
+                </View>
               </TouchableOpacity>
             )}
           />
         )}
-      </StyledView>
+      </View>
     </ScrollView>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "#eff6ff", // bg-blue-50
+    paddingHorizontal: 16, // px-4
+    paddingVertical: 32, // py-8
+  },
+  userCard: {
+    marginBottom: 24,
+    padding: 16,
+    borderRadius: 16,
+    backgroundColor: "#fff",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    elevation: 2,
+  },
+  userName: {
+    fontSize: 20,
+    fontWeight: "bold",
+    color: "#1d4ed8", // text-blue-700
+  },
+  userRoll: {
+    fontSize: 16,
+    color: "#6b7280", // text-gray-500
+  },
+  button: {
+    backgroundColor: "#2563eb", // default blue
+    borderRadius: 6,
+    paddingHorizontal: 24,
+    paddingVertical: 12,
+    marginBottom: 16,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  icon: {
+    marginRight: 8,
+  },
+  buttonText: {
+    color: "#ffffff",
+    fontSize: 18,
+    fontWeight: "600",
+    textAlign: "center",
+  },
+  rideCard: {
+    marginBottom: 32,
+    padding: 24,
+    borderRadius: 20,
+    backgroundColor: "#dbeafe", // bg-blue-100
+    elevation: 2,
+  },
+  rideCardTitle: {
+    fontSize: 18,
+    fontWeight: "600",
+    color: "#1e40af", // text-blue-800
+    marginBottom: 16,
+  },
+  input: {
+    borderWidth: 1,
+    borderColor: "#93c5fd", // border-blue-300
+    backgroundColor: "#fff",
+    borderRadius: 6,
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+    marginBottom: 12,
+  },
+  bookButton: {
+    backgroundColor: "#2563eb",
+    borderRadius: 6,
+    paddingHorizontal: 24,
+    paddingVertical: 12,
+  },
+  sectionTitle: {
+    fontSize: 18,
+    fontWeight: "600",
+    color: "#1e40af",
+    marginBottom: 8,
+  },
+  emptyText: {
+    color: "#6b7280", // text-gray-500
+    marginBottom: 32,
+  },
+  rideItem: {
+    marginBottom: 12,
+    padding: 16,
+    borderRadius: 16,
+    backgroundColor: "#fff",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    elevation: 2,
+  },
+  rideLocation: {
+    fontSize: 16,
+    fontWeight: "bold",
+    color: "#1d4ed8",
+  },
+  rideStatus: {
+    fontSize: 12,
+    color: "#6b7280",
+  },
+  rideFare: {
+    fontSize: 16,
+    fontWeight: "600",
+    color: "#2563eb",
+  },
+});

@@ -19,7 +19,7 @@ import MonthlyAutoShareScreen from "./screens/MonthlyAutoShareScreen";
 // import { NativeWindStyleSheet } from "nativewind";
 
 // NativeWindStyleSheet.setOutput({
-  // default: "native",
+// default: "native",
 // });
 
 const Stack = createStackNavigator();

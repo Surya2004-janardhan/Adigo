@@ -5,16 +5,12 @@ import {
   ActivityIndicator,
   Alert,
   TouchableOpacity,
+  StyleSheet,
 } from "react-native";
-import { styled } from "nativewind";
 import { useApi } from "../ApiContext";
 import { useAuth } from "../AuthContext";
 import axios from "axios";
 import Icon from "react-native-vector-icons/FontAwesome";
-
-const StyledView = styled(View);
-const StyledText = styled(Text);
-const StyledButton = styled(TouchableOpacity);
 
 export default function ProfileScreen({ navigation }) {
   const { baseUrl } = useApi();
@@ -41,54 +37,94 @@ export default function ProfileScreen({ navigation }) {
 
   if (loading) return <ActivityIndicator size="large" color="#2563eb" />;
 
-  if (!user)
-    return (
-      <StyledText className="text-center mt-10 text-red-500">
-        No user data
-      </StyledText>
-    );
+  if (!user) return <Text style={styles.noUserText}>No user data</Text>;
 
   return (
-    <StyledView className="flex-1 bg-blue-50 px-4 py-8">
-      <StyledView className="p-6 rounded-2xl bg-white shadow mb-6">
-        <StyledText className="text-2xl font-bold text-blue-700 mb-2">
-          {user.name}
-        </StyledText>
-        <StyledText className="text-base text-gray-700 mb-1">
-          Roll: {user.rollno}
-        </StyledText>
-        <StyledText className="text-base text-gray-700 mb-1">
-          Email: {user.email}
-        </StyledText>
-        <StyledText className="text-base text-gray-700 mb-1">
-          Phone: {user.phonenumber}
-        </StyledText>
-      </StyledView>
-      <StyledButton
-        className="bg-blue-600 rounded px-6 py-3"
+    <View style={styles.container}>
+      <View style={styles.card}>
+        <Text style={styles.name}>{user.name}</Text>
+        <Text style={styles.detail}>Roll: {user.rollno}</Text>
+        <Text style={styles.detail}>Email: {user.email}</Text>
+        <Text style={styles.detail}>Phone: {user.phonenumber}</Text>
+      </View>
+
+      <TouchableOpacity
+        style={styles.backButton}
         onPress={() => navigation.goBack()}
       >
-        <StyledText className="text-white text-lg text-center font-semibold">
-          Back
-        </StyledText>
-      </StyledButton>
-      <StyledButton
-        className="bg-red-600 rounded px-6 py-3 mt-4 flex-row items-center justify-center"
+        <Text style={styles.buttonText}>Back</Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity
+        style={styles.logoutButton}
         onPress={async () => {
           await logout();
           navigation.replace("LoginSingup");
         }}
       >
-        <Icon
-          name="sign-out"
-          size={20}
-          color="#fff"
-          style={{ marginRight: 8 }}
-        />
-        <StyledText className="text-white text-lg text-center font-semibold">
-          Logout
-        </StyledText>
-      </StyledButton>
-    </StyledView>
+        <Icon name="sign-out" size={20} color="#fff" style={styles.icon} />
+        <Text style={styles.buttonText}>Logout</Text>
+      </TouchableOpacity>
+    </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "#eff6ff", // blue-50
+    paddingHorizontal: 16,
+    paddingVertical: 32,
+  },
+  card: {
+    backgroundColor: "#fff",
+    borderRadius: 16,
+    padding: 24,
+    marginBottom: 24,
+    shadowColor: "#000",
+    shadowOpacity: 0.1,
+    shadowRadius: 10,
+    elevation: 3,
+  },
+  name: {
+    fontSize: 24,
+    fontWeight: "bold",
+    color: "#1d4ed8", // blue-700
+    marginBottom: 8,
+  },
+  detail: {
+    fontSize: 16,
+    color: "#374151", // gray-700
+    marginBottom: 4,
+  },
+  backButton: {
+    backgroundColor: "#2563eb", // blue-600
+    borderRadius: 8,
+    paddingVertical: 12,
+    paddingHorizontal: 24,
+  },
+  logoutButton: {
+    backgroundColor: "#dc2626", // red-600
+    borderRadius: 8,
+    paddingVertical: 12,
+    paddingHorizontal: 24,
+    marginTop: 16,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  buttonText: {
+    color: "#fff",
+    fontSize: 18,
+    fontWeight: "600",
+    textAlign: "center",
+  },
+  noUserText: {
+    marginTop: 40,
+    textAlign: "center",
+    color: "#ef4444", // red-500
+  },
+  icon: {
+    marginRight: 8,
+  },
+});

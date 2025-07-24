@@ -5,15 +5,11 @@ import {
   FlatList,
   TouchableOpacity,
   ActivityIndicator,
+  StyleSheet,
 } from "react-native";
-import { styled } from "nativewind";
 import { useApi } from "../ApiContext";
 import { useAuth } from "../AuthContext";
 import axios from "axios";
-
-const StyledView = styled(View);
-const StyledText = styled(Text);
-const StyledButton = styled(TouchableOpacity);
 
 export default function RideHistoryScreen({ navigation }) {
   const { baseUrl } = useApi();
@@ -41,44 +37,100 @@ export default function RideHistoryScreen({ navigation }) {
   if (loading) return <ActivityIndicator size="large" color="#2563eb" />;
 
   return (
-    <StyledView className="flex-1 bg-blue-50 px-4 py-8">
-      <StyledText className="text-2xl font-bold text-blue-700 mb-4">
-        Ride History
-      </StyledText>
+    <View style={styles.container}>
+      <Text style={styles.header}>Ride History</Text>
+
       {rides.length === 0 ? (
-        <StyledText className="text-gray-500 mb-8">No rides found.</StyledText>
+        <Text style={styles.noRidesText}>No rides found.</Text>
       ) : (
         <FlatList
           data={rides}
           keyExtractor={(item, idx) => idx.toString()}
           renderItem={({ item }) => (
-            <StyledView className="mb-3 p-4 rounded-xl bg-white shadow flex-row justify-between items-center">
-              <StyledView>
-                <StyledText className="text-base font-bold text-blue-700">
+            <View style={styles.rideCard}>
+              <View>
+                <Text style={styles.rideLocation}>
                   {item.pickup_location} → {item.drop_location}
-                </StyledText>
-                <StyledText className="text-xs text-gray-500">
+                </Text>
+                <Text style={styles.rideMeta}>
                   Status: {item.status} |{" "}
                   {item.createdAt
                     ? new Date(item.createdAt).toLocaleString()
                     : ""}
-                </StyledText>
-              </StyledView>
-              <StyledText className="text-base font-semibold text-blue-600">
-                ₹{item.fare || "--"}
-              </StyledText>
-            </StyledView>
+                </Text>
+              </View>
+              <Text style={styles.fare}>₹{item.fare || "--"}</Text>
+            </View>
           )}
         />
       )}
-      <StyledButton
-        className="bg-blue-600 rounded px-6 py-3 mt-6"
+
+      <TouchableOpacity
+        style={styles.backButton}
         onPress={() => navigation.goBack()}
       >
-        <StyledText className="text-white text-lg text-center font-semibold">
-          Back
-        </StyledText>
-      </StyledButton>
-    </StyledView>
+        <Text style={styles.backButtonText}>Back</Text>
+      </TouchableOpacity>
+    </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "#eff6ff", // blue-50
+    paddingHorizontal: 16,
+    paddingVertical: 32,
+  },
+  header: {
+    fontSize: 24,
+    fontWeight: "bold",
+    color: "#1d4ed8", // blue-700
+    marginBottom: 16,
+  },
+  noRidesText: {
+    color: "#6b7280", // gray-500
+    marginBottom: 32,
+  },
+  rideCard: {
+    marginBottom: 12,
+    padding: 16,
+    borderRadius: 16,
+    backgroundColor: "#ffffff",
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.1,
+    shadowRadius: 2,
+    elevation: 2,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+  rideLocation: {
+    fontSize: 16,
+    fontWeight: "bold",
+    color: "#1d4ed8",
+  },
+  rideMeta: {
+    fontSize: 12,
+    color: "#6b7280", // gray-500
+  },
+  fare: {
+    fontSize: 16,
+    fontWeight: "600",
+    color: "#2563eb", // blue-600
+  },
+  backButton: {
+    backgroundColor: "#2563eb", // blue-600
+    borderRadius: 8,
+    paddingVertical: 12,
+    paddingHorizontal: 24,
+    marginTop: 24,
+  },
+  backButtonText: {
+    color: "#ffffff",
+    fontSize: 18,
+    textAlign: "center",
+    fontWeight: "600",
+  },
+});

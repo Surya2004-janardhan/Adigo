@@ -1,12 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, ActivityIndicator, Alert } from "react-native";
-import { styled } from "nativewind";
+import { View, Text, ActivityIndicator, StyleSheet } from "react-native";
 import { useApi } from "../ApiContext";
 import { useAuth } from "../AuthContext";
 import axios from "axios";
-
-const StyledView = styled(View);
-const StyledText = styled(Text);
 
 export default function ActiveRideScreen({ route }) {
   const { baseUrl } = useApi();
@@ -36,33 +32,60 @@ export default function ActiveRideScreen({ route }) {
     return () => clearInterval(interval);
   }, [baseUrl, token, rideId]);
 
-  if (loading) return <ActivityIndicator size="large" color="#2563eb" />;
-  if (!ride)
-    return (
-      <StyledText className="text-center mt-10 text-red-500">
-        No active ride
-      </StyledText>
-    );
+  if (loading) {
+    return <ActivityIndicator size="large" color="#2563eb" />;
+  }
+
+  if (!ride) {
+    return <Text style={styles.noRideText}>No active ride</Text>;
+  }
 
   return (
-    <StyledView className="flex-1 bg-blue-50 px-4 py-8">
-      <StyledView className="p-6 rounded-2xl bg-white shadow mb-6">
-        <StyledText className="text-xl font-bold text-blue-700 mb-2">
-          Active Ride
-        </StyledText>
-        <StyledText className="text-base text-gray-700 mb-1">
-          Pickup: {ride.pickup_location}
-        </StyledText>
-        <StyledText className="text-base text-gray-700 mb-1">
-          Drop: {ride.drop_location}
-        </StyledText>
-        <StyledText className="text-base text-gray-700 mb-1">
-          Fare: ₹{ride.fare}
-        </StyledText>
-        <StyledText className="text-base text-gray-700 mb-1">
-          Status: {ride.status}
-        </StyledText>
-      </StyledView>
-    </StyledView>
+    <View style={styles.container}>
+      <View style={styles.rideCard}>
+        <Text style={styles.rideTitle}>Active Ride</Text>
+        <Text style={styles.rideInfo}>Pickup: {ride.pickup_location}</Text>
+        <Text style={styles.rideInfo}>Drop: {ride.drop_location}</Text>
+        <Text style={styles.rideInfo}>Fare: ₹{ride.fare}</Text>
+        <Text style={styles.rideInfo}>Status: {ride.status}</Text>
+      </View>
+    </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "#eff6ff", // Tailwind's bg-blue-50
+    paddingHorizontal: 16,
+    paddingVertical: 32,
+  },
+  rideCard: {
+    backgroundColor: "#ffffff",
+    padding: 24,
+    borderRadius: 16,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 4,
+    marginBottom: 24,
+  },
+  rideTitle: {
+    fontSize: 20,
+    fontWeight: "bold",
+    color: "#1d4ed8", // Tailwind's text-blue-700
+    marginBottom: 8,
+  },
+  rideInfo: {
+    fontSize: 16,
+    color: "#374151", // Tailwind's text-gray-700
+    marginBottom: 4,
+  },
+  noRideText: {
+    marginTop: 40,
+    textAlign: "center",
+    color: "#ef4444", // Tailwind's text-red-500
+    fontSize: 16,
+  },
+});

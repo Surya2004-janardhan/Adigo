@@ -1,31 +1,43 @@
-import React from "react";
-import { View, Text, TouchableOpacity } from "react-native";
-import { styled } from "nativewind";
+import React, { useRef, useEffect } from "react";
+import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import MapView, { Marker } from "react-native-maps";
 import Icon from "react-native-vector-icons/FontAwesome";
-
-const StyledView = styled(View);
-const StyledText = styled(Text);
-const StyledButton = styled(TouchableOpacity);
 
 export default function MapScreen({ route, navigation }) {
   const { pickup, drop } = route.params;
   const [pickupLat, pickupLng] = pickup.split(",").map(Number);
   const [dropLat, dropLng] = drop.split(",").map(Number);
 
+  const mapRef = useRef(null);
+
+  useEffect(() => {
+    if (mapRef.current) {
+      mapRef.current.fitToCoordinates(
+        [
+          { latitude: pickupLat, longitude: pickupLng },
+          { latitude: dropLat, longitude: dropLng },
+        ],
+        {
+          edgePadding: { top: 100, right: 100, bottom: 100, left: 100 },
+          animated: true,
+        }
+      );
+    }
+  }, []);
+
   return (
-    <StyledView className="flex-1 bg-blue-50">
-      <StyledView className="flex-row items-center p-4 bg-blue-600">
+    <View style={styles.container}>
+      <View style={styles.header}>
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <Icon name="arrow-left" size={24} color="#fff" />
         </TouchableOpacity>
-        <StyledText className="text-white text-xl font-bold ml-4 flex-1">
-          Ride Map
-        </StyledText>
+        <Text style={styles.title}>Ride Map</Text>
         <Icon name="map-marker" size={28} color="#fff" />
-      </StyledView>
+      </View>
+
       <MapView
-        style={{ flex: 1 }}
+        ref={mapRef}
+        style={styles.map}
         initialRegion={{
           latitude: pickupLat,
           longitude: pickupLng,
@@ -44,6 +56,29 @@ export default function MapScreen({ route, navigation }) {
           pinColor="red"
         />
       </MapView>
-    </StyledView>
+    </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "#ebf8ff", // Tailwind's blue-50
+  },
+  header: {
+    flexDirection: "row",
+    alignItems: "center",
+    padding: 16,
+    backgroundColor: "#2563eb", // Tailwind's blue-600
+  },
+  title: {
+    color: "#fff",
+    fontSize: 20,
+    fontWeight: "bold",
+    marginLeft: 16,
+    flex: 1,
+  },
+  map: {
+    flex: 1,
+  },
+});

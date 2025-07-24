@@ -5,16 +5,12 @@ import {
   ActivityIndicator,
   Alert,
   TouchableOpacity,
+  StyleSheet,
 } from "react-native";
-import { styled } from "nativewind";
 import { useApi } from "../ApiContext";
 import { useAuth } from "../AuthContext";
 import axios from "axios";
 import Icon from "react-native-vector-icons/FontAwesome";
-
-const StyledView = styled(View);
-const StyledText = styled(Text);
-const StyledButton = styled(TouchableOpacity);
 
 export default function RideDetailsScreen({ route, navigation }) {
   const { baseUrl } = useApi();
@@ -61,34 +57,21 @@ export default function RideDetailsScreen({ route, navigation }) {
   };
 
   if (loading) return <ActivityIndicator size="large" color="#2563eb" />;
-  if (!ride)
-    return (
-      <StyledText className="text-center mt-10 text-red-500">
-        Ride not found
-      </StyledText>
-    );
+
+  if (!ride) return <Text style={styles.errorText}>Ride not found</Text>;
 
   return (
-    <StyledView className="flex-1 bg-blue-50 px-4 py-8">
-      <StyledView className="p-6 rounded-2xl bg-white shadow mb-6">
-        <StyledText className="text-xl font-bold text-blue-700 mb-2">
-          Ride Details
-        </StyledText>
-        <StyledText className="text-base text-gray-700 mb-1">
-          Pickup: {ride.pickup_location}
-        </StyledText>
-        <StyledText className="text-base text-gray-700 mb-1">
-          Drop: {ride.drop_location}
-        </StyledText>
-        <StyledText className="text-base text-gray-700 mb-1">
-          Fare: ₹{ride.fare}
-        </StyledText>
-        <StyledText className="text-base text-gray-700 mb-1">
-          Status: {ride.status}
-        </StyledText>
-      </StyledView>
-      <StyledButton
-        className="bg-blue-600 rounded px-6 py-3 mb-3 flex-row items-center justify-center"
+    <View style={styles.container}>
+      <View style={styles.card}>
+        <Text style={styles.title}>Ride Details</Text>
+        <Text style={styles.text}>Pickup: {ride.pickup_location}</Text>
+        <Text style={styles.text}>Drop: {ride.drop_location}</Text>
+        <Text style={styles.text}>Fare: ₹{ride.fare}</Text>
+        <Text style={styles.text}>Status: {ride.status}</Text>
+      </View>
+
+      <TouchableOpacity
+        style={[styles.button, styles.mapButton]}
         onPress={() =>
           navigation.navigate("MapScreen", {
             pickup: ride.pickup_location,
@@ -96,34 +79,31 @@ export default function RideDetailsScreen({ route, navigation }) {
           })
         }
       >
-        <Icon name="map" size={20} color="#fff" style={{ marginRight: 8 }} />
-        <StyledText className="text-white text-lg text-center font-semibold">
-          View Map
-        </StyledText>
-      </StyledButton>
+        <Icon name="map" size={20} color="#fff" style={styles.icon} />
+        <Text style={styles.buttonText}>View Map</Text>
+      </TouchableOpacity>
+
       {ride.status === "pending" && (
-        <StyledButton
-          className="bg-red-600 rounded px-6 py-3 mb-3"
+        <TouchableOpacity
+          style={[styles.button, styles.cancelButton]}
           onPress={() => handleAction("cancle")}
         >
-          <StyledText className="text-white text-lg text-center font-semibold">
-            Cancel Ride
-          </StyledText>
-        </StyledButton>
+          <Text style={styles.buttonText}>Cancel Ride</Text>
+        </TouchableOpacity>
       )}
+
       {ride.status === "accepted" && (
-        <StyledButton
-          className="bg-green-600 rounded px-6 py-3 mb-3"
+        <TouchableOpacity
+          style={[styles.button, styles.completeButton]}
           onPress={() => handleAction("complete")}
         >
-          <StyledText className="text-white text-lg text-center font-semibold">
-            Complete Ride
-          </StyledText>
-        </StyledButton>
+          <Text style={styles.buttonText}>Complete Ride</Text>
+        </TouchableOpacity>
       )}
+
       {ride.status === "completed" && !ride.paid && (
-        <StyledButton
-          className="bg-green-700 rounded px-6 py-3 mb-3 flex-row items-center justify-center"
+        <TouchableOpacity
+          style={[styles.button, styles.paymentButton]}
           onPress={() =>
             navigation.navigate("PaymentScreen", {
               rideId: ride._id,
@@ -131,25 +111,83 @@ export default function RideDetailsScreen({ route, navigation }) {
             })
           }
         >
-          <Icon
-            name="rupee"
-            size={20}
-            color="#fff"
-            style={{ marginRight: 8 }}
-          />
-          <StyledText className="text-white text-lg text-center font-semibold">
-            Pay Now
-          </StyledText>
-        </StyledButton>
+          <Icon name="rupee" size={20} color="#fff" style={styles.icon} />
+          <Text style={styles.buttonText}>Pay Now</Text>
+        </TouchableOpacity>
       )}
-      <StyledButton
-        className="bg-blue-600 rounded px-6 py-3"
+
+      <TouchableOpacity
+        style={[styles.button, styles.mapButton]}
         onPress={() => navigation.goBack()}
       >
-        <StyledText className="text-white text-lg text-center font-semibold">
-          Back
-        </StyledText>
-      </StyledButton>
-    </StyledView>
+        <Text style={styles.buttonText}>Back</Text>
+      </TouchableOpacity>
+    </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "#eff6ff", // blue-50
+    paddingHorizontal: 16,
+    paddingVertical: 32,
+  },
+  card: {
+    padding: 24,
+    borderRadius: 16,
+    backgroundColor: "#ffffff",
+    shadowColor: "#000",
+    shadowOpacity: 0.1,
+    shadowRadius: 6,
+    elevation: 3,
+    marginBottom: 24,
+  },
+  title: {
+    fontSize: 20,
+    fontWeight: "bold",
+    color: "#1d4ed8", // blue-700
+    marginBottom: 8,
+  },
+  text: {
+    fontSize: 16,
+    color: "#374151", // gray-700
+    marginBottom: 4,
+  },
+  errorText: {
+    textAlign: "center",
+    marginTop: 40,
+    color: "#ef4444", // red-500
+    fontSize: 16,
+  },
+  button: {
+    paddingVertical: 12,
+    paddingHorizontal: 24,
+    borderRadius: 8,
+    marginBottom: 12,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  mapButton: {
+    backgroundColor: "#2563eb", // blue-600
+  },
+  cancelButton: {
+    backgroundColor: "#dc2626", // red-600
+  },
+  completeButton: {
+    backgroundColor: "#16a34a", // green-600
+  },
+  paymentButton: {
+    backgroundColor: "#15803d", // green-700
+  },
+  buttonText: {
+    color: "#fff",
+    fontSize: 18,
+    fontWeight: "600",
+    textAlign: "center",
+  },
+  icon: {
+    marginRight: 8,
+  },
+});
