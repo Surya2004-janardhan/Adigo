@@ -42,6 +42,7 @@ export const AuthProvider = ({ children }) => {
 
   const signup = async (form) => {
     const res = await axios.post(`${baseUrl}/auth/register`, form);
+    // console.log(res)
     if (res.data.token) {
       setToken(res.data.token);
       await AsyncStorage.setItem("token", res.data.token);

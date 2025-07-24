@@ -1,11 +1,14 @@
 const express = require("express");
-
+const jwt = require("jsonwebtoken");
+// const User = require("../models/User");
 const router = express.Router();
 const User = require("../models/User");
 
 router.post("/register", async (req, res) => {
+  console.log("route called")
   try {
     const { name, rollno, email, phonenumber, password } = req.body;
+    console.log(req.body)
     if (name && rollno && email && phonenumber && password) {
       const user = await User.create({
         name,
@@ -14,6 +17,7 @@ router.post("/register", async (req, res) => {
         phonenumber,
         password,
       });
+      console.log(process.env.JWT_SECRET)
       const token = await jwt.sign(
         { user: user.rollno },
         process.env.JWT_SECRET,
@@ -21,15 +25,17 @@ router.post("/register", async (req, res) => {
       );
       res
         .status(201)
-        .json({ message: "User created successfully", user: user, token });
-      await localStorage.setItem("token", token);
-      res
-        .status(201)
-        .json({ message: "User created successfully", user: user });
+        .json({ message: "User created successfully", user: user, token:token });
+        // console.log(token)
+      // await localStorage.setItem("token", token);
+      // res
+        // .status(201)
+        // .json({ message: "User created successfully", user: user });
     } else {
       res.status(400).json({ message: "Please provide all details" });
     }
   } catch (error) {
+    console.log(error.message)
     res.status(400).json({ message: "Incorrect details" });
   }
 });

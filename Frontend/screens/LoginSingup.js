@@ -42,7 +42,9 @@ export default function LoginSingup({ navigation }) {
         "Success",
         res.data.message || (isLogin ? "Login successful" : "Signup successful")
       );
-      navigation.replace("Home");
+navigation.dispatch(
+  StackActions.replace("Home")
+);
     } catch (e) {
       if (e.response && e.response.data && e.response.data.message) {
         Alert.alert("Error", e.response.data.message);

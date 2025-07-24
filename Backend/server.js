@@ -23,7 +23,7 @@ app.use(cors());
 
 app.use(express.json());
 
-app.use(middleware);
+// app.use(middleware);
 
 app.use("/auth", authRoutes);
 
@@ -34,6 +34,9 @@ app.use("/notification", notificationRoutes);
 app.use("/payment", paymentRoutes);
 app.use("/monthly-auto", monthlyAutoShareRoute);
 // wt am i dng here, y did i exist
+app.get("/", (req, res) => {
+  res.send("Hello World");
+});
 
 app.use(bodyParser.urlencoded({ extended: true }));
 
