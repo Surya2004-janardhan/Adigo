@@ -15,12 +15,12 @@ import SplashScreen from "./SplashScreen";
 // import MapScreen from "./screens/MapScreen";
 import PaymentScreen from "./screens/PaymentScreen";
 import MonthlyAutoShareScreen from "./screens/MonthlyAutoShareScreen";
-import "./global.css";
-import { NativeWindStyleSheet } from "nativewind";
+// import "./global.css";
+// import { NativeWindStyleSheet } from "nativewind";
 
-NativeWindStyleSheet.setOutput({
-  default: "native",
-});
+// NativeWindStyleSheet.setOutput({
+  // default: "native",
+// });
 
 const Stack = createStackNavigator();
 
