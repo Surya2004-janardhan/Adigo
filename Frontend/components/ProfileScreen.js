@@ -6,15 +6,15 @@ import {
   Alert,
   TouchableOpacity,
 } from "react-native";
-import { styled } from "nativewind";
+// import { styled } from "nativewind";
 import { useApi } from "../ApiContext";
 import { useAuth } from "../AuthContext";
 import axios from "axios";
 import Icon from "react-native-vector-icons/FontAwesome";
 
-const StyledView = styled(View);
-const StyledText = styled(Text);
-const StyledButton = styled(TouchableOpacity);
+// const View = styled(View);
+// const Text = styled(Text);
+// const TouchableOpacity = styled(TouchableOpacity);
 
 export default function ProfileScreen({ navigation }) {
   const { baseUrl } = useApi();
@@ -43,36 +43,36 @@ export default function ProfileScreen({ navigation }) {
 
   if (!user)
     return (
-      <StyledText className="text-center mt-10 text-red-500">
+      <Text className="text-center mt-10 text-red-500">
         No user data
-      </StyledText>
+      </Text>
     );
 
   return (
-    <StyledView className="flex-1 bg-blue-50 px-4 py-8">
-      <StyledView className="p-6 rounded-2xl bg-white shadow mb-6">
-        <StyledText className="text-2xl font-bold text-blue-700 mb-2">
+    <View className="flex-1 bg-blue-50 px-4 py-8">
+      <View className="p-6 rounded-2xl bg-white shadow mb-6">
+        <Text className="text-2xl font-bold text-blue-700 mb-2">
           {user.name}
-        </StyledText>
-        <StyledText className="text-base text-gray-700 mb-1">
+        </Text>
+        <Text className="text-base text-gray-700 mb-1">
           Roll: {user.rollno}
-        </StyledText>
-        <StyledText className="text-base text-gray-700 mb-1">
+        </Text>
+        <Text className="text-base text-gray-700 mb-1">
           Email: {user.email}
-        </StyledText>
-        <StyledText className="text-base text-gray-700 mb-1">
+        </Text>
+        <Text className="text-base text-gray-700 mb-1">
           Phone: {user.phonenumber}
-        </StyledText>
-      </StyledView>
-      <StyledButton
+        </Text>
+      </View>
+      <TouchableOpacity
         className="bg-blue-600 rounded px-6 py-3"
         onPress={() => navigation.goBack()}
       >
-        <StyledText className="text-white text-lg text-center font-semibold">
+        <Text className="text-white text-lg text-center font-semibold">
           Back
-        </StyledText>
-      </StyledButton>
-      <StyledButton
+        </Text>
+      </TouchableOpacity>
+      <TouchableOpacity
         className="bg-red-600 rounded px-6 py-3 mt-4 flex-row items-center justify-center"
         onPress={async () => {
           await logout();
@@ -85,10 +85,10 @@ export default function ProfileScreen({ navigation }) {
           color="#fff"
           style={{ marginRight: 8 }}
         />
-        <StyledText className="text-white text-lg text-center font-semibold">
+        <Text className="text-white text-lg text-center font-semibold">
           Logout
-        </StyledText>
-      </StyledButton>
-    </StyledView>
+        </Text>
+      </TouchableOpacity>
+    </View>
   );
 }

@@ -6,14 +6,14 @@ import {
   TouchableOpacity,
   ActivityIndicator,
 } from "react-native";
-import { styled } from "nativewind";
+// import { styled } from "nativewind";
 import { useApi } from "../ApiContext";
 import { useAuth } from "../AuthContext";
 import axios from "axios";
 
-const StyledView = styled(View);
-const StyledText = styled(Text);
-const StyledButton = styled(TouchableOpacity);
+// const View = styled(View);
+// const Text = styled(Text);
+// const TouchableOpacity = styled(TouchableOpacity);
 
 export default function RideHistoryScreen({ navigation }) {
   const { baseUrl } = useApi();
@@ -41,44 +41,44 @@ export default function RideHistoryScreen({ navigation }) {
   if (loading) return <ActivityIndicator size="large" color="#2563eb" />;
 
   return (
-    <StyledView className="flex-1 bg-blue-50 px-4 py-8">
-      <StyledText className="text-2xl font-bold text-blue-700 mb-4">
+    <View className="flex-1 bg-blue-50 px-4 py-8">
+      <Text className="text-2xl font-bold text-blue-700 mb-4">
         Ride History
-      </StyledText>
+      </Text>
       {rides.length === 0 ? (
-        <StyledText className="text-gray-500 mb-8">No rides found.</StyledText>
+        <Text className="text-gray-500 mb-8">No rides found.</Text>
       ) : (
         <FlatList
           data={rides}
           keyExtractor={(item, idx) => idx.toString()}
           renderItem={({ item }) => (
-            <StyledView className="mb-3 p-4 rounded-xl bg-white shadow flex-row justify-between items-center">
-              <StyledView>
-                <StyledText className="text-base font-bold text-blue-700">
+            <View className="mb-3 p-4 rounded-xl bg-white shadow flex-row justify-between items-center">
+              <View>
+                <Text className="text-base font-bold text-blue-700">
                   {item.pickup_location} → {item.drop_location}
-                </StyledText>
-                <StyledText className="text-xs text-gray-500">
+                </Text>
+                <Text className="text-xs text-gray-500">
                   Status: {item.status} |{" "}
                   {item.createdAt
                     ? new Date(item.createdAt).toLocaleString()
                     : ""}
-                </StyledText>
-              </StyledView>
-              <StyledText className="text-base font-semibold text-blue-600">
+                </Text>
+              </View>
+              <Text className="text-base font-semibold text-blue-600">
                 ₹{item.fare || "--"}
-              </StyledText>
-            </StyledView>
+              </Text>
+            </View>
           )}
         />
       )}
-      <StyledButton
+      <TouchableOpacity
         className="bg-blue-600 rounded px-6 py-3 mt-6"
         onPress={() => navigation.goBack()}
       >
-        <StyledText className="text-white text-lg text-center font-semibold">
+        <Text className="text-white text-lg text-center font-semibold">
           Back
-        </StyledText>
-      </StyledButton>
-    </StyledView>
+        </Text>
+      </TouchableOpacity>
+    </View>
   );
 }

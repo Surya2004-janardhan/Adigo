@@ -7,15 +7,15 @@ import {
   Alert,
   ScrollView,
 } from "react-native";
-import { styled } from "nativewind";
+// import { styled } from "nativewind";
 import { useApi } from "../ApiContext";
 import { useAuth } from "../AuthContext";
 import axios from "axios";
 
-const StyledView = styled(View);
-const StyledText = styled(Text);
-const StyledInput = styled(TextInput);
-const StyledButton = styled(TouchableOpacity);
+// const View = styled(View);
+// const Text = styled(Text);
+// const TextInput = styled(TextInput);
+// const TouchableOpacity = styled(TouchableOpacity);
 
 export default function LoginSingup({ navigation }) {
   const { baseUrl } = useApi();
@@ -61,19 +61,19 @@ export default function LoginSingup({ navigation }) {
 
   return (
     <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
-      <StyledView className="flex-1 items-center justify-center bg-white px-4 py-8">
-        <StyledText className="text-3xl font-bold mb-6 text-blue-700">
+      <View className="flex-1 items-center justify-center bg-white px-4 py-8">
+        <Text className="text-3xl font-bold mb-6 text-blue-700">
           {isLogin ? "Login" : "Sign Up"}
-        </StyledText>
+        </Text>
         {!isLogin && (
           <>
-            <StyledInput
+            <TextInput
               className="border border-gray-300 rounded px-4 py-2 mb-3 w-72"
               placeholder="Name"
               value={form.name}
               onChangeText={(v) => handleChange("name", v)}
             />
-            <StyledInput
+            <TextInput
               className="border border-gray-300 rounded px-4 py-2 mb-3 w-72"
               placeholder="Email"
               value={form.email}
@@ -81,7 +81,7 @@ export default function LoginSingup({ navigation }) {
               keyboardType="email-address"
               autoCapitalize="none"
             />
-            <StyledInput
+            <TextInput
               className="border border-gray-300 rounded px-4 py-2 mb-3 w-72"
               placeholder="Phone Number"
               value={form.phonenumber}
@@ -90,37 +90,37 @@ export default function LoginSingup({ navigation }) {
             />
           </>
         )}
-        <StyledInput
+        <TextInput
           className="border border-gray-300 rounded px-4 py-2 mb-3 w-72"
           placeholder="Roll Number"
           value={form.rollno}
           onChangeText={(v) => handleChange("rollno", v)}
           autoCapitalize="none"
         />
-        <StyledInput
+        <TextInput
           className="border border-gray-300 rounded px-4 py-2 mb-6 w-72"
           placeholder="Password"
           value={form.password}
           onChangeText={(v) => handleChange("password", v)}
           secureTextEntry
         />
-        <StyledButton
+        <TouchableOpacity
           className="bg-blue-600 rounded px-6 py-3 mb-4 w-72"
           onPress={handleSubmit}
           disabled={loading}
         >
-          <StyledText className="text-white text-lg text-center font-semibold">
+          <Text className="text-white text-lg text-center font-semibold">
             {loading ? "Please wait..." : isLogin ? "Login" : "Sign Up"}
-          </StyledText>
-        </StyledButton>
-        <StyledButton onPress={() => setIsLogin(!isLogin)}>
-          <StyledText className="text-blue-700 underline">
+          </Text>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => setIsLogin(!isLogin)}>
+          <Text className="text-blue-700 underline">
             {isLogin
               ? "Don't have an account? Sign Up"
               : "Already have an account? Login"}
-          </StyledText>
-        </StyledButton>
-      </StyledView>
+          </Text>
+        </TouchableOpacity>
+      </View>
     </ScrollView>
   );
 }

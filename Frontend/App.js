@@ -5,17 +5,17 @@ import { AuthProvider, useAuth } from "./AuthContext";
 import React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
-import HomeScreen from "./screens/HomeScreen";
-import LoginSingup from "./screens/LoginSingup";
-import ProfileScreen from "./screens/ProfileScreen";
-import RideDetailsScreen from "./screens/RideDetailsScreen";
-import ActiveRideScreen from "./screens/ActiveRideScreen";
-import RideHistoryScreen from "./screens/RideHistoryScreen";
+import HomeScreen from "./components/HomeScreen";
+import LoginSingup from "./components/LoginSingup";
+import ProfileScreen from "./components/ProfileScreen";
+import RideDetailsScreen from "./components/RideDetailsScreen";
+import ActiveRideScreen from "./components/ActiveRideScreen";
+import RideHistoryScreen from "./components/RideHistoryScreen";
 import SplashScreen from "./SplashScreen";
-// import MapScreen from "./screens/MapScreen";
-import PaymentScreen from "./screens/PaymentScreen";
-import MonthlyAutoShareScreen from "./screens/MonthlyAutoShareScreen";
-// import "./global.css";
+// import MapScreen from "./components/MapScreen";
+import PaymentScreen from "./components/PaymentScreen";
+import MonthlyAutoShareScreen from "./components/MonthlyAutoShareScreen";
+import "./global.css";
 // import { NativeWindStyleSheet } from "nativewind";
 
 // NativeWindStyleSheet.setOutput({
@@ -62,12 +62,3 @@ export default function App() {
     </ApiProvider>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-});

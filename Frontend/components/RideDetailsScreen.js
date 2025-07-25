@@ -6,15 +6,15 @@ import {
   Alert,
   TouchableOpacity,
 } from "react-native";
-import { styled } from "nativewind";
+// import { styled } from "nativewind";
 import { useApi } from "../ApiContext";
 import { useAuth } from "../AuthContext";
 import axios from "axios";
 import Icon from "react-native-vector-icons/FontAwesome";
 
-const StyledView = styled(View);
-const StyledText = styled(Text);
-const StyledButton = styled(TouchableOpacity);
+// const View = styled(View);
+// const Text = styled(Text);
+// const TouchableOpacity = styled(TouchableOpacity);
 
 export default function RideDetailsScreen({ route, navigation }) {
   const { baseUrl } = useApi();
@@ -63,31 +63,31 @@ export default function RideDetailsScreen({ route, navigation }) {
   if (loading) return <ActivityIndicator size="large" color="#2563eb" />;
   if (!ride)
     return (
-      <StyledText className="text-center mt-10 text-red-500">
+      <Text className="text-center mt-10 text-red-500">
         Ride not found
-      </StyledText>
+      </Text>
     );
 
   return (
-    <StyledView className="flex-1 bg-blue-50 px-4 py-8">
-      <StyledView className="p-6 rounded-2xl bg-white shadow mb-6">
-        <StyledText className="text-xl font-bold text-blue-700 mb-2">
+    <View className="flex-1 bg-blue-50 px-4 py-8">
+      <View className="p-6 rounded-2xl bg-white shadow mb-6">
+        <Text className="text-xl font-bold text-blue-700 mb-2">
           Ride Details
-        </StyledText>
-        <StyledText className="text-base text-gray-700 mb-1">
+        </Text>
+        <Text className="text-base text-gray-700 mb-1">
           Pickup: {ride.pickup_location}
-        </StyledText>
-        <StyledText className="text-base text-gray-700 mb-1">
+        </Text>
+        <Text className="text-base text-gray-700 mb-1">
           Drop: {ride.drop_location}
-        </StyledText>
-        <StyledText className="text-base text-gray-700 mb-1">
+        </Text>
+        <Text className="text-base text-gray-700 mb-1">
           Fare: ₹{ride.fare}
-        </StyledText>
-        <StyledText className="text-base text-gray-700 mb-1">
+        </Text>
+        <Text className="text-base text-gray-700 mb-1">
           Status: {ride.status}
-        </StyledText>
-      </StyledView>
-      <StyledButton
+        </Text>
+      </View>
+      <TouchableOpacity
         className="bg-blue-600 rounded px-6 py-3 mb-3 flex-row items-center justify-center"
         onPress={() =>
           navigation.navigate("MapScreen", {
@@ -97,32 +97,32 @@ export default function RideDetailsScreen({ route, navigation }) {
         }
       >
         <Icon name="map" size={20} color="#fff" style={{ marginRight: 8 }} />
-        <StyledText className="text-white text-lg text-center font-semibold">
+        <Text className="text-white text-lg text-center font-semibold">
           View Map
-        </StyledText>
-      </StyledButton>
+        </Text>
+      </TouchableOpacity>
       {ride.status === "pending" && (
-        <StyledButton
+        <TouchableOpacity
           className="bg-red-600 rounded px-6 py-3 mb-3"
           onPress={() => handleAction("cancle")}
         >
-          <StyledText className="text-white text-lg text-center font-semibold">
+          <Text className="text-white text-lg text-center font-semibold">
             Cancel Ride
-          </StyledText>
-        </StyledButton>
+          </Text>
+        </TouchableOpacity>
       )}
       {ride.status === "accepted" && (
-        <StyledButton
+        <TouchableOpacity
           className="bg-green-600 rounded px-6 py-3 mb-3"
           onPress={() => handleAction("complete")}
         >
-          <StyledText className="text-white text-lg text-center font-semibold">
+          <Text className="text-white text-lg text-center font-semibold">
             Complete Ride
-          </StyledText>
-        </StyledButton>
+          </Text>
+        </TouchableOpacity>
       )}
       {ride.status === "completed" && !ride.paid && (
-        <StyledButton
+        <TouchableOpacity
           className="bg-green-700 rounded px-6 py-3 mb-3 flex-row items-center justify-center"
           onPress={() =>
             navigation.navigate("PaymentScreen", {
@@ -137,19 +137,19 @@ export default function RideDetailsScreen({ route, navigation }) {
             color="#fff"
             style={{ marginRight: 8 }}
           />
-          <StyledText className="text-white text-lg text-center font-semibold">
+          <Text className="text-white text-lg text-center font-semibold">
             Pay Now
-          </StyledText>
-        </StyledButton>
+          </Text>
+        </TouchableOpacity>
       )}
-      <StyledButton
+      <TouchableOpacity
         className="bg-blue-600 rounded px-6 py-3"
         onPress={() => navigation.goBack()}
       >
-        <StyledText className="text-white text-lg text-center font-semibold">
+        <Text className="text-white text-lg text-center font-semibold">
           Back
-        </StyledText>
-      </StyledButton>
-    </StyledView>
+        </Text>
+      </TouchableOpacity>
+    </View>
   );
 }

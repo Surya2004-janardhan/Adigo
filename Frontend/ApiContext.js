@@ -1,7 +1,7 @@
 import React, { createContext, useContext } from "react";
 
 // Change this to your backend's IP if not running on the same device
-const BASE_URL = "http://localhost:3000";
+const BASE_URL = "http://192.168.67.53:3000";
 
 const ApiContext = createContext({ baseUrl: BASE_URL });
 

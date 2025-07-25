@@ -8,16 +8,16 @@ import {
   Alert,
   ScrollView,
 } from "react-native";
-import { styled } from "nativewind";
+// import { styled } from "nativewind";
 import { useApi } from "../ApiContext";
 import { useAuth } from "../AuthContext";
 import axios from "axios";
 import Icon from "react-native-vector-icons/FontAwesome";
 
-const StyledView = styled(View);
-const StyledText = styled(Text);
-const StyledInput = styled(TextInput);
-const StyledButton = styled(TouchableOpacity);
+// const View = styled(View);
+// const Text = styled(Text);
+// const TextInput = styled(TextInput);
+// const TouchableOpacity = styled(TouchableOpacity);
 
 export default function HomeScreen({ navigation }) {
   const { baseUrl } = useApi();
@@ -98,26 +98,26 @@ export default function HomeScreen({ navigation }) {
 
   return (
     <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
-      <StyledView className="flex-1 bg-blue-50 px-4 py-8">
+      <View className="flex-1 bg-blue-50 px-4 py-8">
         {/* User Info */}
-        <StyledView className="mb-6 p-4 rounded-xl bg-white shadow flex-row items-center justify-between">
-          <StyledText className="text-xl font-bold text-blue-700">
+        <View className="mb-6 p-4 rounded-xl bg-white shadow flex-row items-center justify-between">
+          <Text className="text-xl font-bold text-blue-700">
             Hi, {user ? user.name : "..."}
-          </StyledText>
-          <StyledText className="text-base text-gray-500">
+          </Text>
+          <Text className="text-base text-gray-500">
             Roll: {user ? user.rollno : "..."}
-          </StyledText>
-        </StyledView>
-        <StyledButton
+          </Text>
+        </View>
+        <TouchableOpacity
           className="bg-blue-600 rounded px-6 py-3 mb-4 flex-row items-center justify-center"
           onPress={() => navigation.navigate("Profile")}
         >
           <Icon name="user" size={20} color="#fff" style={{ marginRight: 8 }} />
-          <StyledText className="text-white text-lg text-center font-semibold">
+          <Text className="text-white text-lg text-center font-semibold">
             View Profile
-          </StyledText>
-        </StyledButton>
-        <StyledButton
+          </Text>
+        </TouchableOpacity>
+        <TouchableOpacity
           className="bg-blue-500 rounded px-6 py-3 mb-4 flex-row items-center justify-center"
           onPress={() => navigation.navigate("RideHistory")}
         >
@@ -127,23 +127,23 @@ export default function HomeScreen({ navigation }) {
             color="#fff"
             style={{ marginRight: 8 }}
           />
-          <StyledText className="text-white text-lg text-center font-semibold">
+          <Text className="text-white text-lg text-center font-semibold">
             Ride History
-          </StyledText>
-        </StyledButton>
+          </Text>
+        </TouchableOpacity>
         {activeRide && (
-          <StyledButton
+          <TouchableOpacity
             className="bg-green-600 rounded px-6 py-3 mb-4"
             onPress={() =>
               navigation.navigate("ActiveRide", { rideId: activeRide._id })
             }
           >
-            <StyledText className="text-white text-lg text-center font-semibold">
+            <Text className="text-white text-lg text-center font-semibold">
               Go to Active Ride
-            </StyledText>
-          </StyledButton>
+            </Text>
+          </TouchableOpacity>
         )}
-        <StyledButton
+        <TouchableOpacity
           className="bg-purple-600 rounded px-6 py-3 mb-4 flex-row items-center justify-center"
           onPress={() => navigation.navigate("MonthlyAutoShare")}
         >
@@ -153,43 +153,43 @@ export default function HomeScreen({ navigation }) {
             color="#fff"
             style={{ marginRight: 8 }}
           />
-          <StyledText className="text-white text-lg text-center font-semibold">
+          <Text className="text-white text-lg text-center font-semibold">
             Monthly Auto Share
-          </StyledText>
-        </StyledButton>
+          </Text>
+        </TouchableOpacity>
         {/* Book Ride Card */}
-        <StyledView className="mb-8 p-6 rounded-2xl bg-blue-100 shadow">
-          <StyledText className="text-lg font-semibold text-blue-800 mb-4">
+        <View className="mb-8 p-6 rounded-2xl bg-blue-100 shadow">
+          <Text className="text-lg font-semibold text-blue-800 mb-4">
             Book a Ride
-          </StyledText>
-          <StyledInput
+          </Text>
+          <TextInput
             className="border border-blue-300 rounded px-4 py-2 mb-3 bg-white"
             placeholder="Pickup Location (lat,long)"
             value={pickup}
             onChangeText={setPickup}
           />
-          <StyledInput
+          <TextInput
             className="border border-blue-300 rounded px-4 py-2 mb-4 bg-white"
             placeholder="Drop Location (lat,long)"
             value={drop}
             onChangeText={setDrop}
           />
-          <StyledButton
+          <TouchableOpacity
             className="bg-blue-600 rounded px-6 py-3"
             onPress={handleBookRide}
             disabled={loading}
           >
-            <StyledText className="text-white text-lg text-center font-semibold">
+            <Text className="text-white text-lg text-center font-semibold">
               {loading ? "Booking..." : "Book Ride"}
-            </StyledText>
-          </StyledButton>
-        </StyledView>
+            </Text>
+          </TouchableOpacity>
+        </View>
         {/* Recent Rides */}
-        <StyledText className="text-lg font-semibold text-blue-800 mb-2">
+        <Text className="text-lg font-semibold text-blue-800 mb-2">
           Recent Rides
-        </StyledText>
+        </Text>
         {rides.length === 0 ? (
-          <StyledText className="text-gray-500 mb-8">No rides yet.</StyledText>
+          <Text className="text-gray-500 mb-8">No rides yet.</Text>
         ) : (
           <FlatList
             data={rides}
@@ -200,24 +200,24 @@ export default function HomeScreen({ navigation }) {
                   navigation.navigate("RideDetails", { rideId: item._id })
                 }
               >
-                <StyledView className="mb-3 p-4 rounded-xl bg-white shadow flex-row justify-between items-center">
-                  <StyledView>
-                    <StyledText className="text-base font-bold text-blue-700">
+                <View className="mb-3 p-4 rounded-xl bg-white shadow flex-row justify-between items-center">
+                  <View>
+                    <Text className="text-base font-bold text-blue-700">
                       {item.pickup_location} → {item.drop_location}
-                    </StyledText>
-                    <StyledText className="text-xs text-gray-500">
+                    </Text>
+                    <Text className="text-xs text-gray-500">
                       Status: {item.status}
-                    </StyledText>
-                  </StyledView>
-                  <StyledText className="text-base font-semibold text-blue-600">
+                    </Text>
+                  </View>
+                  <Text className="text-base font-semibold text-blue-600">
                     ₹{item.fare || "--"}
-                  </StyledText>
-                </StyledView>
+                  </Text>
+                </View>
               </TouchableOpacity>
             )}
           />
         )}
-      </StyledView>
+      </View>
     </ScrollView>
   );
 }

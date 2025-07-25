@@ -6,15 +6,15 @@ import {
   ActivityIndicator,
   Alert,
 } from "react-native";
-import { styled } from "nativewind";
+// import { styled } from "nativewind";
 import Icon from "react-native-vector-icons/FontAwesome";
 import { useApi } from "../ApiContext";
 import { useAuth } from "../AuthContext";
 import axios from "axios";
 
-const StyledView = styled(View);
-const StyledText = styled(Text);
-const StyledButton = styled(TouchableOpacity);
+// const View = styled(View);
+// const Text = styled(Text);
+// const TouchableOpacity = styled(TouchableOpacity);
 
 export default function PaymentScreen({ route, navigation }) {
   const { rideId, fare } = route.params;
@@ -48,30 +48,30 @@ export default function PaymentScreen({ route, navigation }) {
   };
 
   return (
-    <StyledView className="flex-1 bg-blue-50 px-4 py-8 items-center justify-center">
+    <View className="flex-1 bg-blue-50 px-4 py-8 items-center justify-center">
       <Icon
         name="credit-card"
         size={48}
         color="#2563eb"
         style={{ marginBottom: 24 }}
       />
-      <StyledText className="text-2xl font-bold text-blue-700 mb-4">
+      <Text className="text-2xl font-bold text-blue-700 mb-4">
         Payment
-      </StyledText>
-      <StyledText className="text-lg text-gray-700 mb-2">
+      </Text>
+      <Text className="text-lg text-gray-700 mb-2">
         Ride Fare: <Text className="font-bold">₹{fare}</Text>
-      </StyledText>
-      <StyledButton
+      </Text>
+      <TouchableOpacity
         className="bg-green-600 rounded px-8 py-4 mt-6 flex-row items-center justify-center"
         onPress={handlePay}
         disabled={loading}
       >
         <Icon name="rupee" size={20} color="#fff" style={{ marginRight: 8 }} />
-        <StyledText className="text-white text-lg font-semibold">
+        <Text className="text-white text-lg font-semibold">
           {loading ? "Processing..." : "Pay with Razorpay"}
-        </StyledText>
-      </StyledButton>
-      <StyledButton
+        </Text>
+      </TouchableOpacity>
+      <TouchableOpacity
         className="bg-blue-600 rounded px-6 py-3 mt-6 flex-row items-center justify-center"
         onPress={() => navigation.goBack()}
       >
@@ -81,10 +81,10 @@ export default function PaymentScreen({ route, navigation }) {
           color="#fff"
           style={{ marginRight: 8 }}
         />
-        <StyledText className="text-white text-lg font-semibold">
+        <Text className="text-white text-lg font-semibold">
           Back
-        </StyledText>
-      </StyledButton>
-    </StyledView>
+        </Text>
+      </TouchableOpacity>
+    </View>
   );
 }

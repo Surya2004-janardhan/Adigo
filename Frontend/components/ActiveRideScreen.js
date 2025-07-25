@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { View, Text, ActivityIndicator, Alert } from "react-native";
-import { styled } from "nativewind";
+// import { styled } from "nativewind";
 import { useApi } from "../ApiContext";
 import { useAuth } from "../AuthContext";
 import axios from "axios";
 
-const StyledView = styled(View);
-const StyledText = styled(Text);
+// const View = styled(View);
+// const StyledText = styled(Text);
 
 export default function ActiveRideScreen({ route }) {
   const { baseUrl } = useApi();
@@ -45,8 +45,8 @@ export default function ActiveRideScreen({ route }) {
     );
 
   return (
-    <StyledView className="flex-1 bg-blue-50 px-4 py-8">
-      <StyledView className="p-6 rounded-2xl bg-white shadow mb-6">
+    <View className="flex-1 bg-blue-50 px-4 py-8">
+      <View className="p-6 rounded-2xl bg-white shadow mb-6">
         <StyledText className="text-xl font-bold text-blue-700 mb-2">
           Active Ride
         </StyledText>
@@ -62,7 +62,7 @@ export default function ActiveRideScreen({ route }) {
         <StyledText className="text-base text-gray-700 mb-1">
           Status: {ride.status}
         </StyledText>
-      </StyledView>
-    </StyledView>
+      </View>
+    </View>
   );
 }
