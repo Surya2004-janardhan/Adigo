@@ -34,7 +34,7 @@ export default function HomeScreen({ navigation }) {
     const fetchUser = async () => {
       try {
         const res = await axios.get(`${baseUrl}/user/profile`, {
-          headers: { Authorization: `Bearer ${token}` },
+          headers: { authentication: `Bearer ${token}` },
         });
         setUser(res.data.user);
       } catch (e) {
@@ -60,7 +60,7 @@ export default function HomeScreen({ navigation }) {
       const res = await axios.post(
         `${baseUrl}/user/bookRide`,
         { pickup_location: pickup, drop_location: drop },
-        { headers: { Authorization: `Bearer ${token}` } }
+        { headers: { authentication: `Bearer ${token}` } }
       );
       Alert.alert("Success", res.data.message || "Ride booked!");
       setPickup("");
@@ -81,7 +81,7 @@ export default function HomeScreen({ navigation }) {
     setLoading(true);
     try {
       const res = await axios.get(`${baseUrl}/user/rides`, {
-        headers: { Authorization: `Bearer ${token}` },
+        headers: { authentication: `Bearer ${token}` },
       });
       setRides(res.data.user_rides || []);
     } catch (e) {

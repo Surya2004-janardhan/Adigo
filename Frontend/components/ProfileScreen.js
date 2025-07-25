@@ -26,9 +26,11 @@ export default function ProfileScreen({ navigation }) {
     if (!token) return;
     const fetchProfile = async () => {
       try {
+        console.log("inside of profile fetch");
         const res = await axios.get(`${baseUrl}/user/profile`, {
-          headers: { Authorization: `Bearer ${token}` },
+          headers: { authentication: `Bearer ${token}` },
         });
+        // console.log(res);
         setUser(res.data.user);
       } catch (e) {
         Alert.alert("Error", "Could not fetch profile");
@@ -42,11 +44,7 @@ export default function ProfileScreen({ navigation }) {
   if (loading) return <ActivityIndicator size="large" color="#2563eb" />;
 
   if (!user)
-    return (
-      <Text className="text-center mt-10 text-red-500">
-        No user data
-      </Text>
-    );
+    return <Text className="text-center mt-10 text-red-500">No user data</Text>;
 
   return (
     <View className="flex-1 bg-blue-50 px-4 py-8">

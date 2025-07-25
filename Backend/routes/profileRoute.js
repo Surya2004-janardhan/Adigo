@@ -4,8 +4,10 @@ const User = require("../models/User");
 const middleware = require("../middleware/authMiddleware");
 router.get("/profile", middleware, async (req, res) => {
   try {
+    console.log("inside of profile route ");
     // get user roll no from token in the locastorage then fetch user profile all details
-    const rollno = req.user.rollno;
+    const rollno = req.user.user;
+    console.log(rollno);
     const user = await User.findOne({ rollno: rollno });
     if (user) {
       res
