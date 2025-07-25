@@ -34,26 +34,60 @@ export default function LoginSingup({ navigation }) {
     setForm({ ...form, [key]: value });
   };
 
+  // const handleSubmit = async () => {
+  //   console.log("inside");
+  //   setLoading(true);
+  //   try {
+  //     let res;
+  //     if (isLogin) {
+  //       console.log("calling login");
+  //       res = await login(form.rollno, form.password);
+  //       // console.log(res.data);
+  //     } else {
+  //       res = await signup(form);
+  //     }
+  //     console.log(res.data);
+  //     Alert.alert("Success", res.data);
+
+  //     Alert.alert(
+  //       "Success",
+  //       res.data.message || (isLogin ? "Login successful" : "Signup successful")
+  //     );
+  //     navigation.replace("Home");
+  //   } catch (e) {
+  //     if (e.response && e.response.data && e.response.data.message) {
+  //       Alert.alert("Error", e.response.data.message);
+  //     } else {
+  //       Alert.alert("Error", "Network error");
+  //     }
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
+
   const handleSubmit = async () => {
     setLoading(true);
     try {
       let res;
       if (isLogin) {
         res = await login(form.rollno, form.password);
+        const res = await login(form); // <- this should update context
+        console.log("Logged in successfully", res.data);
+        // No need to navigate manually — RootNavigator will change screen
       } else {
         res = await signup(form);
+        const res = await signup(form);
+        if (!res.data.token) {
+          Alert.alert("Signup successful", "Please log in to continue");
+          setIsLogin(true);
+        }
       }
+    } catch (err) {
       Alert.alert(
         "Success",
         res.data.message || (isLogin ? "Login successful" : "Signup successful")
       );
-      navigation.replace("Home");
-    } catch (e) {
-      if (e.response && e.response.data && e.response.data.message) {
-        Alert.alert("Error", e.response.data.message);
-      } else {
-        Alert.alert("Error", "Network error");
-      }
+      navigation.dispatch(StackActions.replace("Home"));
     } finally {
       setLoading(false);
     }

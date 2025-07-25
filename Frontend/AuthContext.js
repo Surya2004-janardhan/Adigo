@@ -18,7 +18,7 @@ export const AuthProvider = ({ children }) => {
         setToken(storedToken);
         try {
           const res = await axios.get(`${baseUrl}/user/profile`, {
-            headers: { Authorization: `Bearer ${storedToken}` },
+            headers: { authentication: `Bearer ${storedToken}` },
           });
           setUser(res.data.user);
         } catch {
@@ -31,7 +31,9 @@ export const AuthProvider = ({ children }) => {
   }, [baseUrl]);
 
   const login = async (rollno, password) => {
+    console.log("auth login");
     const res = await axios.post(`${baseUrl}/auth/login`, { rollno, password });
+    // console.log(res);
     if (res.data.token) {
       setToken(res.data.token);
       await AsyncStorage.setItem("token", res.data.token);
