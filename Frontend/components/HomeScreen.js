@@ -7,12 +7,17 @@ import {
   FlatList,
   Alert,
   ScrollView,
+  SafeAreaView,
+  Animated,
 } from "react-native";
+import Icon from "react-native-vector-icons/FontAwesome";
 // import { styled } from "nativewind";
 import { useApi } from "../ApiContext";
 import { useAuth } from "../AuthContext";
 import axios from "axios";
-import Icon from "react-native-vector-icons/FontAwesome";
+import { MotiView } from "moti";
+
+// import Icon from "react-native-vector-icons/FontAwesome";
 
 // const View = styled(View);
 // const Text = styled(Text);
@@ -90,134 +95,200 @@ export default function HomeScreen({ navigation }) {
       setLoading(false);
     }
   };
-
-  // Find active ride (status not completed/cancled)
   const activeRide = rides.find(
     (r) => r.status === "pending" || r.status === "accepted"
   );
 
+  // Bottom nav handler, active tab state:
+  const [activeTab, setActiveTab] = useState("Home");
+
+  // Dummy tab navigation handler:
+  const handleTabPress = (tab) => {
+    setActiveTab(tab);
+    switch (tab) {
+      case "Profile":
+        navigation.navigate("Profile");
+        break;
+      case "History":
+        navigation.navigate("RideHistory");
+        break;
+      case "Home":
+      default:
+        // stay on home
+        break;
+    }
+  };
   return (
-    <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
-      <View className="flex-1 bg-blue-50 px-4 py-8">
-        {/* User Info */}
-        <View className="mb-6 p-4 rounded-xl bg-white shadow flex-row items-center justify-between">
-          <Text className="text-xl font-bold text-blue-700">
-            Hi, {user ? user.name : "..."}
-          </Text>
-          <Text className="text-base text-gray-500">
-            Roll: {user ? user.rollno : "..."}
-          </Text>
-        </View>
-        <TouchableOpacity
-          className="bg-blue-600 rounded px-6 py-3 mb-4 flex-row items-center justify-center"
-          onPress={() => navigation.navigate("Profile")}
+    <SafeAreaView className="flex-1 bg-white">
+      <ScrollView
+        contentContainerStyle={{ paddingBottom: 100 }}
+        className="px-5 pt-6"
+        showsVerticalScrollIndicator={false}
+      >
+        {/* User Card with animated entrance */}
+        <Animated.View
+          className={`bg-gray-100 rounded-3xl px-6 py-5 mb-6 shadow-md flex-row justify-between items-center
+            transition-all duration-700 ${MotiView ? "opacity-100 scale-100" : "opacity-0 scale-90"}`}
         >
-          <Icon name="user" size={20} color="#fff" style={{ marginRight: 8 }} />
-          <Text className="text-white text-lg text-center font-semibold">
-            View Profile
-          </Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          className="bg-blue-500 rounded px-6 py-3 mb-4 flex-row items-center justify-center"
-          onPress={() => navigation.navigate("RideHistory")}
-        >
-          <Icon
-            name="history"
-            size={20}
-            color="#fff"
-            style={{ marginRight: 8 }}
-          />
-          <Text className="text-white text-lg text-center font-semibold">
-            Ride History
-          </Text>
-        </TouchableOpacity>
-        {activeRide && (
-          <TouchableOpacity
-            className="bg-green-600 rounded px-6 py-3 mb-4"
-            onPress={() =>
-              navigation.navigate("ActiveRide", { rideId: activeRide._id })
-            }
-          >
-            <Text className="text-white text-lg text-center font-semibold">
-              Go to Active Ride
+          <View>
+            <Text className="text-2xl font-extrabold text-black">
+              Hello, {user ? user.name : "..."}
             </Text>
+            <Text className="text-sm text-gray-600 mt-1">
+              Roll Number: {user ? user.rollno : "..."}
+            </Text>
+          </View>
+          <TouchableOpacity
+            onPress={() => navigation.navigate("Profile")}
+            activeOpacity={0.7}
+            className="bg-black rounded-full p-3 shadow
+              transition-all duration-200
+              active:scale-90"
+          >
+            <Icon name="user" size={24} color="white" />
           </TouchableOpacity>
-        )}
-        <TouchableOpacity
-          className="bg-purple-600 rounded px-6 py-3 mb-4 flex-row items-center justify-center"
-          onPress={() => navigation.navigate("MonthlyAutoShare")}
+        </Animated.View>
+
+        {/* Action buttons with touch feedback */}
+        <View className="flex-row justify-between mb-6 space-x-4">
+          <TouchableOpacity
+            onPress={() => navigation.navigate("RideHistory")}
+            activeOpacity={0.8}
+            className="flex-1 bg-gray-900 rounded-xl py-4 shadow flex-row items-center justify-center
+              transition-all duration-150 active:scale-95"
+          >
+            <Icon name="history" size={20} color="white" />
+            <Text className="text-white font-semibold ml-3">Ride History</Text>
+          </TouchableOpacity>
+
+          {activeRide && (
+            <TouchableOpacity
+              onPress={() =>
+                navigation.navigate("ActiveRide", { rideId: activeRide._id })
+              }
+              activeOpacity={0.8}
+              className="flex-1 bg-green-800 rounded-xl py-4 shadow items-center justify-center
+                transition-all duration-150 active:scale-95"
+            >
+              <Text className="text-white font-semibold">Active Ride</Text>
+            </TouchableOpacity>
+          )}
+        </View>
+
+        {/* Book a Ride Card with animated entry */}
+        <Animated.View
+          className={`bg-gray-50 rounded-3xl p-6 shadow mb-8
+            transition-all duration-700 ${MotiView ? "opacity-100 scale-100" : "opacity-0 scale-90"}`}
         >
-          <Icon
-            name="calendar"
-            size={20}
-            color="#fff"
-            style={{ marginRight: 8 }}
-          />
-          <Text className="text-white text-lg text-center font-semibold">
-            Monthly Auto Share
-          </Text>
-        </TouchableOpacity>
-        {/* Book Ride Card */}
-        <View className="mb-8 p-6 rounded-2xl bg-blue-100 shadow">
-          <Text className="text-lg font-semibold text-blue-800 mb-4">
-            Book a Ride
-          </Text>
+          <Text className="text-xl font-bold text-black mb-5">Book a Ride</Text>
           <TextInput
-            className="border border-blue-300 rounded px-4 py-2 mb-3 bg-white"
             placeholder="Pickup Location (lat,long)"
+            placeholderTextColor="#7a7a7a"
             value={pickup}
             onChangeText={setPickup}
+            className="border border-gray-300 rounded-xl px-5 py-3 mb-4 bg-white text-black"
           />
           <TextInput
-            className="border border-blue-300 rounded px-4 py-2 mb-4 bg-white"
             placeholder="Drop Location (lat,long)"
+            placeholderTextColor="#7a7a7a"
             value={drop}
             onChangeText={setDrop}
+            className="border border-gray-300 rounded-xl px-5 py-3 mb-6 bg-white text-black"
           />
           <TouchableOpacity
-            className="bg-blue-600 rounded px-6 py-3"
-            onPress={handleBookRide}
+            className={`bg-black rounded-xl py-4 shadow 
+              transition-all duration-150 active:scale-95
+              ${loading ? "opacity-70 animate-pulse" : "opacity-100"}`}
+            onPress={() => {
+              // Your handleBookRide here
+              Alert.alert("Button pressed", "Implement booking logic");
+            }}
             disabled={loading}
+            activeOpacity={0.8}
           >
-            <Text className="text-white text-lg text-center font-semibold">
+            <Text className="text-white font-bold text-center text-lg">
               {loading ? "Booking..." : "Book Ride"}
             </Text>
           </TouchableOpacity>
-        </View>
+        </Animated.View>
+
         {/* Recent Rides */}
-        <Text className="text-lg font-semibold text-blue-800 mb-2">
-          Recent Rides
-        </Text>
+        <Text className="text-xl font-bold text-black mb-4">Recent Rides</Text>
         {rides.length === 0 ? (
-          <Text className="text-gray-500 mb-8">No rides yet.</Text>
+          <Text className="text-gray-500 mb-8">No rides booked yet.</Text>
         ) : (
           <FlatList
             data={rides}
             keyExtractor={(item, idx) => idx.toString()}
+            scrollEnabled={false}
             renderItem={({ item }) => (
               <TouchableOpacity
                 onPress={() =>
                   navigation.navigate("RideDetails", { rideId: item._id })
                 }
+                activeOpacity={0.7}
+                className="mb-4 transition-all duration-200 active:scale-98"
               >
-                <View className="mb-3 p-4 rounded-xl bg-white shadow flex-row justify-between items-center">
-                  <View>
-                    <Text className="text-base font-bold text-blue-700">
+                <View className="bg-white rounded-2xl p-5 shadow flex-row justify-between">
+                  <View className="flex-1 pr-3">
+                    <Text className="font-semibold text-black text-base">
                       {item.pickup_location} → {item.drop_location}
                     </Text>
-                    <Text className="text-xs text-gray-500">
+                    <Text className="text-gray-600 mt-1 capitalize">
                       Status: {item.status}
                     </Text>
                   </View>
-                  <Text className="text-base font-semibold text-blue-600">
-                    ₹{item.fare || "--"}
-                  </Text>
+                  <View className="justify-center">
+                    <Text className="text-black font-semibold text-lg">
+                      ₹{item.fare ?? "--"}
+                    </Text>
+                  </View>
                 </View>
               </TouchableOpacity>
             )}
           />
         )}
-      </View>
-    </ScrollView>
+      </ScrollView>
+      {/* Animated Bottom Navbar */}
+      <View className="absolute bottom-0 left-0 right-0 bg-white border-t border-gray-300 flex-row justify-around py-3 shadow-lg">
+        {[
+          { label: "Home", icon: "home" },
+          { label: "Profile", icon: "user" },
+          { label: "History", icon: "history" },
+        ].map((tab) => (
+          <TouchableOpacity
+            key={tab.label}
+            onPress={() => handleTabPress(tab.label)}
+            activeOpacity={0.75}
+            className="items-center flex-1"
+            style={{
+              transform: [
+                {
+                  scale: activeTab === tab.label ? 1.14 : 1,
+                },
+              ],
+            }}
+          >
+            <Icon
+              name={tab.icon}
+              size={activeTab === tab.label ? 28 : 24}
+              color={activeTab === tab.label ? "black" : "gray"}
+            />
+            <Text
+              className={`text-xs mt-1 transition-all duration-200 ${
+                activeTab === tab.label
+                  ? "text-black font-semibold"
+                  : "text-gray-500"
+              }`}
+              style={{
+                letterSpacing: activeTab === tab.label ? 2 : 0.5,
+              }}
+            >
+              {tab.label}
+            </Text>
+          </TouchableOpacity>
+        ))}
+      </View>{" "}
+    </SafeAreaView>
   );
 }
