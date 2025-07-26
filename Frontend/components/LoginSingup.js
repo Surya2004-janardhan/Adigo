@@ -10,20 +10,13 @@ import {
 
 // IMPORTANT: Make sure you import your login and signup functions properly
 // Example:
-// import { useAuth } from "../AuthContext";
-// const { login, signup } = useAuth();
+import { useApi } from "../ApiContext";
+import { useAuth } from "../AuthContext";
+import axios from "axios";
 
 export default function LoginSingup({ navigation }) {
-  // Dummy placeholder: replace with your actual auth methods
-  const login = async (rollno, password) => {
-    // Your login logic here
-    return { data: { message: "Logged in successfully" } };
-  };
-  const signup = async (form) => {
-    // Your signup logic here
-    return { data: { message: "Signed up successfully" } };
-  };
-
+  const { baseUrl } = useApi();
+  const { login, signup } = useAuth();
   const [isLogin, setIsLogin] = useState(true);
   const [form, setForm] = useState({
     name: "",
@@ -37,32 +30,33 @@ export default function LoginSingup({ navigation }) {
   const handleChange = (key, value) => {
     setForm({ ...form, [key]: value });
   };
-
   const handleSubmit = async () => {
     setLoading(true);
     try {
       let res;
       if (isLogin) {
         res = await login(form.rollno, form.password);
+        const res = await login(form); // <- this should update context
+        console.log("Logged in successfully", res.data);
+        // No need to navigate manually — RootNavigator will change screen
       } else {
         res = await signup(form);
+        const res = await signup(form);
+        if (!res.data.token) {
+          Alert.alert("Signup successful", "Please log in to continue");
+          setIsLogin(true);
+        }
       }
+    } catch (err) {
       Alert.alert(
         "Success",
         res.data.message || (isLogin ? "Login successful" : "Signup successful")
       );
       navigation.dispatch(StackActions.replace("Home"));
-    } catch (e) {
-      if (e.response && e.response.data && e.response.data.message) {
-        Alert.alert("Error", e.response.data.message);
-      } else {
-        Alert.alert("Error", "Network error");
-      }
     } finally {
       setLoading(false);
     }
   };
-
   return (
     <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
       <View className="flex-1 items-center justify-center  bg-white px-4 py-8">
