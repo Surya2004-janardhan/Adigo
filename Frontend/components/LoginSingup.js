@@ -7,19 +7,23 @@ import {
   Alert,
   ScrollView,
 } from "react-native";
-// import { styled } from "nativewind";
-import { useApi } from "../ApiContext";
-import { useAuth } from "../AuthContext";
-import axios from "axios";
 
-// const View = styled(View);
-// const Text = styled(Text);
-// const TextInput = styled(TextInput);
-// const TouchableOpacity = styled(TouchableOpacity);
+// IMPORTANT: Make sure you import your login and signup functions properly
+// Example:
+// import { useAuth } from "../AuthContext";
+// const { login, signup } = useAuth();
 
 export default function LoginSingup({ navigation }) {
-  const { baseUrl } = useApi();
-  const { login, signup } = useAuth();
+  // Dummy placeholder: replace with your actual auth methods
+  const login = async (rollno, password) => {
+    // Your login logic here
+    return { data: { message: "Logged in successfully" } };
+  };
+  const signup = async (form) => {
+    // Your signup logic here
+    return { data: { message: "Signed up successfully" } };
+  };
+
   const [isLogin, setIsLogin] = useState(true);
   const [form, setForm] = useState({
     name: "",
@@ -34,60 +38,26 @@ export default function LoginSingup({ navigation }) {
     setForm({ ...form, [key]: value });
   };
 
-  // const handleSubmit = async () => {
-  //   console.log("inside");
-  //   setLoading(true);
-  //   try {
-  //     let res;
-  //     if (isLogin) {
-  //       console.log("calling login");
-  //       res = await login(form.rollno, form.password);
-  //       // console.log(res.data);
-  //     } else {
-  //       res = await signup(form);
-  //     }
-  //     console.log(res.data);
-  //     Alert.alert("Success", res.data);
-
-  //     Alert.alert(
-  //       "Success",
-  //       res.data.message || (isLogin ? "Login successful" : "Signup successful")
-  //     );
-  //     navigation.replace("Home");
-  //   } catch (e) {
-  //     if (e.response && e.response.data && e.response.data.message) {
-  //       Alert.alert("Error", e.response.data.message);
-  //     } else {
-  //       Alert.alert("Error", "Network error");
-  //     }
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
-
   const handleSubmit = async () => {
     setLoading(true);
     try {
       let res;
       if (isLogin) {
         res = await login(form.rollno, form.password);
-        const res = await login(form); // <- this should update context
-        console.log("Logged in successfully", res.data);
-        // No need to navigate manually — RootNavigator will change screen
       } else {
         res = await signup(form);
-        const res = await signup(form);
-        if (!res.data.token) {
-          Alert.alert("Signup successful", "Please log in to continue");
-          setIsLogin(true);
-        }
       }
-    } catch (err) {
       Alert.alert(
         "Success",
         res.data.message || (isLogin ? "Login successful" : "Signup successful")
       );
       navigation.dispatch(StackActions.replace("Home"));
+    } catch (e) {
+      if (e.response && e.response.data && e.response.data.message) {
+        Alert.alert("Error", e.response.data.message);
+      } else {
+        Alert.alert("Error", "Network error");
+      }
     } finally {
       setLoading(false);
     }
@@ -95,20 +65,27 @@ export default function LoginSingup({ navigation }) {
 
   return (
     <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
-      <View className="flex-1 items-center justify-center bg-white px-4 py-8">
-        <Text className="text-3xl font-bold mb-6 text-blue-700">
+      <View className="flex-1 items-center justify-center  bg-white px-4 py-8">
+        <Text className="text-4xl font-extrabold mb-6 text-black select-none">
           {isLogin ? "Login" : "Sign Up"}
         </Text>
+
         {!isLogin && (
           <>
             <TextInput
-              className="border border-gray-300 rounded px-4 py-2 mb-3 w-72"
+              className="border border-gray-300 rounded-lg px-4 py-2 mb-3 w-80 h-[45px]
+                focus:border-gray-700 focus:ring-2 focus:ring-gray-400
+                transition-all duration-300 transform
+                hover:scale-[1.02] active:scale-[0.98] "
               placeholder="Name"
               value={form.name}
               onChangeText={(v) => handleChange("name", v)}
             />
             <TextInput
-              className="border border-gray-300 rounded px-4 py-2 mb-3 w-72"
+              className="border border-gray-300 rounded-lg px-4 py-2 mb-3 w-80 h-[45px]
+                focus:border-gray-700 focus:ring-2 focus:ring-gray-400
+                transition-all duration-300 transform
+                hover:scale-[1.02] active:scale-[0.98] "
               placeholder="Email"
               value={form.email}
               onChangeText={(v) => handleChange("email", v)}
@@ -116,7 +93,10 @@ export default function LoginSingup({ navigation }) {
               autoCapitalize="none"
             />
             <TextInput
-              className="border border-gray-300 rounded px-4 py-2 mb-3 w-72"
+              className="border border-gray-300 rounded-lg px-4 py-2 mb-3 w-80 h-[45px]
+                focus:border-gray-700 focus:ring-2 focus:ring-gray-400
+                transition-all duration-300 transform
+                hover:scale-[1.02] active:scale-[0.98] "
               placeholder="Phone Number"
               value={form.phonenumber}
               onChangeText={(v) => handleChange("phonenumber", v)}
@@ -124,31 +104,51 @@ export default function LoginSingup({ navigation }) {
             />
           </>
         )}
+
         <TextInput
-          className="border border-gray-300 rounded px-4 py-2 mb-3 w-72"
+          className="border border-gray-300 rounded-lg px-4 py-2 mb-5 w-80 h-[45px]
+            focus:border-gray-700 focus:ring-2 focus:ring-gray-400
+            transition-all duration-300 transform
+            hover:scale-[1.02] active:scale-[0.98] "
           placeholder="Roll Number"
           value={form.rollno}
           onChangeText={(v) => handleChange("rollno", v)}
           autoCapitalize="none"
         />
         <TextInput
-          className="border border-gray-300 rounded px-4 py-2 mb-6 w-72"
+          className="border border-gray-300 rounded-lg px-4 py-2 mb-6 w-80 h-[45px]
+            focus:border-gray-700 focus:ring-2 focus:ring-gray-200
+            transition-all duration-300 transform
+            hover:scale-[1.02] active:scale-[0.98] "
           placeholder="Password"
           value={form.password}
           onChangeText={(v) => handleChange("password", v)}
           secureTextEntry
         />
+
         <TouchableOpacity
-          className="bg-blue-600 rounded px-6 py-3 mb-4 w-72"
+          className={`
+            bg-black rounded-lg px-6 py-3 mb-4 w-80 h-[40px]
+            
+            transform
+            hover:scale-[1.05]
+            active:scale-[0.95]
+            transition-transform duration-300
+            ${loading ? "opacity-70" : "opacity-100"}
+          `}
           onPress={handleSubmit}
           disabled={loading}
         >
-          <Text className="text-white text-lg text-center font-semibold">
+          <Text className="text-white text-lg text-center font-semibold select-none">
             {loading ? "Please wait..." : isLogin ? "Login" : "Sign Up"}
           </Text>
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => setIsLogin(!isLogin)}>
-          <Text className="text-blue-700 underline">
+
+        <TouchableOpacity
+          onPress={() => setIsLogin(!isLogin)}
+          activeOpacity={0.7}
+        >
+          <Text className="text-black underline select-none">
             {isLogin
               ? "Don't have an account? Sign Up"
               : "Already have an account? Login"}
