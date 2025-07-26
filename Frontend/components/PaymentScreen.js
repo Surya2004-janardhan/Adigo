@@ -55,9 +55,7 @@ export default function PaymentScreen({ route, navigation }) {
         color="#2563eb"
         style={{ marginBottom: 24 }}
       />
-      <Text className="text-2xl font-bold text-blue-700 mb-4">
-        Payment
-      </Text>
+      <Text className="text-2xl font-bold text-blue-700 mb-4">Payment</Text>
       <Text className="text-lg text-gray-700 mb-2">
         Ride Fare: <Text className="font-bold">₹{fare}</Text>
       </Text>
@@ -81,9 +79,7 @@ export default function PaymentScreen({ route, navigation }) {
           color="#fff"
           style={{ marginRight: 8 }}
         />
-        <Text className="text-white text-lg font-semibold">
-          Back
-        </Text>
+        <Text className="text-white text-lg font-semibold">Back</Text>
       </TouchableOpacity>
     </View>
   );
